@@ -1,0 +1,2767 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>سامانه جامع مدیریت مدرسه</title>
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+<style>
+:root{--bg:#e9edf4;--bg2:#eef1f7;--sd:#c6ccd9;--sl:#fff;--txt:#39435c;--muted:#7b879c;--line:#d7dce6;--pri:#5b7cfa;--pri2:#8b5cf6;--ok:#22c55e;--warn:#f59e0b;--bad:#ef4444;--info:#0ea5e9}
+*{box-sizing:border-box}html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);min-height:100vh;font-family:Vazirmatn,'Segoe UI',Tahoma,sans-serif;font-size:14px}
+.neu{background:var(--bg);border-radius:20px;box-shadow:9px 9px 18px var(--sd),-9px -9px 18px var(--sl)}
+.neu-s{background:var(--bg);border-radius:14px;box-shadow:5px 5px 10px var(--sd),-5px -5px 10px var(--sl)}
+.neu-in{background:var(--bg);border-radius:14px;box-shadow:inset 4px 4px 8px var(--sd),inset -4px -4px 8px var(--sl)}
+.login-wrap{min-height:100vh;display:grid;place-items:center;padding:20px}
+.login-card{width:100%;max-width:400px;padding:34px 28px;border-radius:26px;text-align:center}
+.login-logo{width:72px;height:72px;display:grid;place-items:center;font-size:32px;border-radius:22px;margin:0 auto 18px}
+.login-card h1{margin:0 0 4px;font-size:1.3rem}.login-sub{color:var(--muted);font-size:.85rem;margin:0 0 22px}
+.login-card form{display:flex;flex-direction:column;gap:14px;text-align:right}
+.login-hint{margin-top:20px;padding:14px;background:var(--bg2);border-radius:14px;text-align:right;font-size:.75rem;color:var(--muted);line-height:1.9}
+#loginErr{color:var(--bad);font-size:.8rem;min-height:18px;text-align:center}
+.wrap{display:grid;grid-template-columns:255px 1fr;gap:22px;padding:22px;min-height:100vh;max-width:1600px;margin:0 auto}
+@media(max-width:960px){.wrap{grid-template-columns:1fr;padding:14px;gap:14px}}
+.side{position:sticky;top:22px;height:calc(100vh - 44px);padding:18px 14px;display:flex;flex-direction:column;gap:16px}
+@media(max-width:960px){.side{position:static;height:auto}}
+.brand{display:flex;align-items:center;gap:10px;padding:4px 6px}
+.brand .logo{width:44px;height:44px;display:grid;place-items:center;font-size:20px;border-radius:14px}
+.brand b{display:block;font-size:.9rem}.brand small{color:var(--muted);font-size:.7rem;display:block}
+nav{display:flex;flex-direction:column;gap:5px;overflow:auto;flex:1}
+.nav-btn{display:flex;align-items:center;gap:10px;border:0;cursor:pointer;font-family:inherit;font-size:.82rem;color:var(--txt);padding:9px 12px;border-radius:13px;background:var(--bg);box-shadow:4px 4px 9px var(--sd),-4px -4px 9px var(--sl);transition:.15s;text-align:right}
+.nav-btn span{font-size:1rem}.nav-btn:hover{color:var(--pri)}
+.nav-btn.active{color:#fff;background:linear-gradient(135deg,var(--pri),var(--pri2));box-shadow:5px 5px 12px #bfc6d6,-4px -4px 10px var(--sl)}
+.nav-btn .nav-badge{margin-right:auto;background:var(--bad);color:#fff;font-size:.68rem;padding:1px 6px;border-radius:8px;font-weight:700}
+.nav-btn.active .nav-badge{background:#fff;color:var(--bad)}
+.side-foot{display:flex;flex-direction:column;gap:9px}
+.btn{border:0;cursor:pointer;border-radius:14px;padding:10px 16px;font-family:inherit;font-size:.85rem;background:var(--bg);color:var(--txt);box-shadow:4px 4px 9px var(--sd),-4px -4px 9px var(--sl);transition:.15s;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn:hover{color:var(--pri)}.btn:active{box-shadow:inset 3px 3px 7px var(--sd),inset -3px -3px 7px var(--sl)}
+.btn.primary{color:#fff;background:linear-gradient(135deg,var(--pri),var(--pri2));box-shadow:5px 5px 12px #c0c7d7,-4px -4px 10px var(--sl)}
+.btn.primary:hover{color:#fff;filter:brightness(1.05)}
+.btn.ok{color:#fff;background:linear-gradient(135deg,#34d399,#22c55e)}
+.btn.bad{color:#fff;background:linear-gradient(135deg,#f87171,#ef4444)}
+.btn.warn{color:#fff;background:linear-gradient(135deg,#fbbf24,#f59e0b)}
+.btn.sm{padding:6px 11px;font-size:.76rem;border-radius:11px}
+.btn.full{width:100%}
+main{display:flex;flex-direction:column;gap:20px;min-width:0}
+.topbar{display:flex;align-items:center;gap:14px;padding:12px 16px;flex-wrap:wrap}
+.search{display:flex;align-items:center;gap:8px;padding:9px 14px;flex:1;min-width:200px}
+.search input{border:0;background:transparent;outline:none;font-family:inherit;font-size:.86rem;color:var(--txt);width:100%}
+.top-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pill{padding:8px 14px;font-size:.78rem;color:var(--muted);border-radius:12px}
+.user-chip{display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:12px}
+.user-chip .av{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,var(--pri),var(--pri2));font-weight:700;font-size:.85rem}
+.card{padding:20px;margin-bottom:20px;border-radius:20px}
+.card h3{margin:0 0 16px;font-size:1rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:16px;margin-bottom:20px}
+.stat{padding:14px 16px;border-radius:20px}
+.stat .i{font-size:1.3rem}.stat .t{font-size:.74rem;color:var(--muted);margin-top:8px}
+.stat .v{font-size:1.4rem;font-weight:700;margin-top:4px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:640px){.grid2{grid-template-columns:1fr}}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:800px){.grid3{grid-template-columns:1fr}}
+.fld{display:flex;flex-direction:column;gap:6px;font-size:.8rem;color:var(--muted)}
+.fld.full{grid-column:1/-1}
+.fld input,.fld select,.fld textarea{border:0;outline:none;font-family:inherit;font-size:.86rem;color:var(--txt);padding:10px 13px;border-radius:13px;background:var(--bg);box-shadow:inset 4px 4px 8px var(--sd),inset -4px -4px 8px var(--sl)}
+.fld input:focus,.fld select:focus,.fld textarea:focus{box-shadow:inset 4px 4px 8px var(--sd),inset -4px -4px 8px var(--sl),0 0 0 2px #b9c6f7}
+.toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px}
+.tbl{width:100%;border-collapse:separate;border-spacing:0 8px;font-size:.83rem}
+.tbl th{font-weight:600;color:var(--muted);text-align:right;padding:4px 12px;font-size:.75rem;white-space:nowrap}
+.tbl td{background:var(--bg2);padding:11px 12px;vertical-align:middle}
+.tbl tbody tr td:first-child{border-radius:0 14px 14px 0}
+.tbl tbody tr td:last-child{border-radius:14px 0 0 14px}
+.tbl tbody tr:hover td{background:#e6eaf3}
+.tbl tbody tr.tr-present td{background:#e9f9ee}.tbl tbody tr.tr-absent td{background:#fdecec}
+.tbl tbody tr.tr-late td{background:#fef7e6}.tbl tbody tr.tr-leave td{background:#e8f5fe}
+.tbl-wrap{overflow-x:auto}
+.badge{display:inline-block;padding:4px 10px;border-radius:10px;font-size:.72rem;font-weight:600}
+.b-ok{background:#dcfce7;color:#15803d}.b-bad{background:#fee2e2;color:#b91c1c}
+.b-warn{background:#fef3c7;color:#b45309}.b-info{background:#e0f2fe;color:#0369a1}
+.b-mut{background:#e5e9f2;color:#5b6478}.b-pri{background:#e0e7ff;color:#4338ca}
+.att-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.att-card{padding:12px 14px;border-radius:16px;display:flex;flex-direction:column;gap:10px}
+.att-card .nm{font-size:.85rem;font-weight:600}
+.att-btns{display:flex;gap:6px;flex-wrap:wrap}
+.att-btns button{flex:1;min-width:52px;border:0;cursor:pointer;font-family:inherit;font-size:.72rem;padding:7px 4px;border-radius:10px;background:var(--bg);color:var(--muted);box-shadow:3px 3px 6px var(--sd),-3px -3px 6px var(--sl)}
+.att-btns button.on[data-s="حاضر"]{background:linear-gradient(135deg,#34d399,#22c55e);color:#fff;box-shadow:none}
+.att-btns button.on[data-s="غایب"]{background:linear-gradient(135deg,#f87171,#ef4444);color:#fff;box-shadow:none}
+.att-btns button.on[data-s="تاخیر"]{background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#fff;box-shadow:none}
+.att-btns button.on[data-s="مرخصی"]{background:linear-gradient(135deg,#38bdf8,#0ea5e9);color:#fff;box-shadow:none}
+.modal-bg{position:fixed;inset:0;background:rgba(57,67,92,.32);backdrop-filter:blur(4px);display:grid;place-items:center;padding:18px;z-index:99}
+.modal{width:100%;max-width:640px;max-height:90vh;overflow:auto;padding:22px;border-radius:22px;animation:pop .18s ease;background:var(--bg)}
+.modal.wide{max-width:900px}
+@keyframes pop{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.modal-head h3{margin:0;font-size:1rem}
+.modal-foot{display:flex;gap:10px;justify-content:flex-start;margin-top:20px;flex-wrap:wrap}
+.icon-btn{border:0;cursor:pointer;width:34px;height:34px;border-radius:11px;background:var(--bg);color:var(--muted);box-shadow:3px 3px 7px var(--sd),-3px -3px 7px var(--sl);font-family:inherit}
+#toasts{position:fixed;bottom:22px;left:22px;display:flex;flex-direction:column;gap:10px;z-index:200;max-width:340px}
+.toast{padding:12px 18px;border-radius:14px;font-size:.82rem;background:var(--bg);box-shadow:6px 6px 14px var(--sd),-6px -6px 14px var(--sl);animation:slide .2s ease}
+@keyframes slide{from{transform:translateX(-20px);opacity:0}to{transform:translateX(0);opacity:1}}
+.toast.ok{border-right:4px solid var(--ok)}.toast.bad{border-right:4px solid var(--bad)}
+.toast.warn{border-right:4px solid var(--warn)}.toast.info{border-right:4px solid var(--info)}
+.empty{text-align:center;color:var(--muted);padding:34px;font-size:.85rem}
+.bar{height:9px;border-radius:9px;background:var(--bg);box-shadow:inset 2px 2px 4px var(--sd),inset -2px -2px 4px var(--sl);overflow:hidden}
+.bar>i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,var(--pri),var(--pri2))}
+.hint{font-size:.75rem;color:var(--muted);line-height:1.9}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:12px;font-size:.78rem;background:var(--bg);box-shadow:3px 3px 7px var(--sd),-3px -3px 7px var(--sl);cursor:pointer}
+.chip.on{color:#fff;background:linear-gradient(135deg,var(--pri),var(--pri2));box-shadow:none}
+.msg-item{padding:14px 16px;border-radius:16px;margin-bottom:10px;background:var(--bg2);border-right:4px solid var(--line)}
+.msg-item.urgent{border-right-color:var(--bad)}.msg-item.high{border-right-color:var(--warn)}
+.msg-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.msg-body{font-size:.84rem;line-height:1.9;white-space:pre-wrap}
+.msg-meta{font-size:.72rem;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap}
+.welcome{padding:34px 28px;text-align:center;border-radius:22px;background:linear-gradient(135deg,#eef2ff,#f5eefb);border:2px dashed #c7d2fe;margin-bottom:20px}
+.welcome h2{margin:0 0 8px;font-size:1.2rem}.welcome p{margin:0 0 20px;color:var(--muted);font-size:.85rem;line-height:1.9}
+.welcome .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-top:20px}
+.welcome .step{background:#fff;padding:14px;border-radius:14px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.welcome .step .n{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;display:grid;place-items:center;margin:0 auto 8px;font-weight:700}
+.welcome .step .t{font-size:.82rem;font-weight:600}
+.welcome .step .d{font-size:.72rem;color:var(--muted);margin-top:4px;line-height:1.6}
+.lock-notice{padding:10px 14px;background:#fef3c7;border-radius:12px;font-size:.76rem;color:#92400e;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.lock-notice::before{content:'🔒';font-size:1.1rem}
+.tabs-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tab-chip{padding:8px 14px;border:0;cursor:pointer;font-family:inherit;font-size:.8rem;border-radius:11px;background:var(--bg);color:var(--muted);box-shadow:3px 3px 7px var(--sd),-3px -3px 7px var(--sl)}
+.tab-chip.active{background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;box-shadow:none}
+.tt-grid{display:grid;grid-template-columns:90px repeat(6,1fr);gap:6px;font-size:.76rem}
+.tt-cell{padding:10px;background:var(--bg2);border-radius:10px;min-height:52px;display:flex;flex-direction:column;justify-content:center;text-align:center}
+.tt-cell.head{background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;font-weight:700}
+.tt-cell .sub{font-size:.68rem;color:var(--muted);margin-top:3px}
+#printSheet{display:none}
+@media print{
+  @page{size:A4 portrait;margin:5mm}
+  html,body{background:#fff!important;margin:0;padding:0}
+  #app,#loginScreen,.modal-bg,#toasts{display:none!important}
+  #printSheet{display:block!important;width:200mm;direction:rtl;color:#000;font-family:Vazirmatn,Tahoma,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .ps-head{border-bottom:.4mm solid #000;padding-bottom:1mm;margin-bottom:1.5mm}
+  .ps-h1{display:flex;justify-content:space-between;align-items:baseline;font-size:10pt;font-weight:700}
+  .ps-h2{font-size:8pt;margin-top:.6mm}.ps-h3{font-size:6.5pt;margin-top:.6mm;display:flex;gap:4mm;flex-wrap:wrap}
+  .ps-legend{font-size:5.6pt;color:#444;margin-top:.5mm}
+  .ps-body{column-count:var(--cols,2);column-gap:2.5mm;column-rule:.15mm solid #aaa;column-fill:auto;font-size:var(--fs,8pt);line-height:1.12}
+  .ps-row{display:flex;align-items:center;gap:.7mm;padding:.35mm 0;border-bottom:.12mm solid #cfcfcf;break-inside:avoid;page-break-inside:avoid}
+  .ps-i{width:3.6mm;flex:none;color:#555;font-size:calc(var(--fs) * .82)}
+  .ps-n{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ps-s{display:flex;gap:.15mm;flex:none}
+  .ps-c{width:2.6mm;height:2.6mm;border-radius:50%;border:.22mm solid #555;display:inline-flex;align-items:center;justify-content:center;font-size:calc(var(--fs) * .72);line-height:1;color:#333}
+  .ps-c.on{background:#111;color:#fff;border-color:#111}
+  .ps-foot{margin-top:2mm;border-top:.3mm solid #000;padding-top:1mm;display:flex;justify-content:space-between;align-items:flex-end;font-size:6.5pt}
+  .ps-sign{min-width:60mm;border-bottom:.2mm dotted #333;height:5mm;display:inline-block;width:55mm}
+  .ps-table{width:100%;border-collapse:collapse;font-size:8pt}
+  .ps-table th,.ps-table td{border:.2mm solid #333;padding:1mm 1.5mm;text-align:center}
+  .ps-table th{background:#e8e8e8}
+  .ps-title{font-size:12pt;font-weight:700;text-align:center;margin-bottom:2mm}
+  .ps-info{font-size:8pt;margin-bottom:2mm;display:flex;gap:5mm;flex-wrap:wrap}
+  .ps-info b{font-weight:700}
+}
+</style>
+</head>
+<body>
+
+<div id="loginScreen" class="login-wrap">
+  <div class="login-card neu">
+    <div class="login-logo neu-in">🏫</div>
+    <h1>سامانه جامع مدرسه</h1>
+    <p class="login-sub">ورود به سیستم</p>
+    <form id="loginForm" onsubmit="doLogin(event)">
+      <label class="fld"><span>نام کاربری</span><input id="loginUser" autocomplete="username" required></label>
+      <label class="fld"><span>رمز عبور</span><input id="loginPass" type="password" autocomplete="current-password" required></label>
+      <div id="loginErr"></div>
+      <button class="btn primary full" type="submit">🔐 ورود</button>
+    </form>
+    <div class="login-hint">
+      <p style="margin:0 0 6px;font-weight:600;color:var(--txt)">راهنمای ورود اولیه:</p>
+      <small>مدیر: <b>admin</b> / <b>admin</b></small><br>
+      <small>پس از ورود، از بخش «کاربران» حساب‌های دیگر را بسازید.</small>
+    </div>
+  </div>
+</div>
+
+<div id="app" class="wrap" style="display:none">
+  <aside class="side neu">
+    <div class="brand">
+      <div class="logo neu-in">🏫</div>
+      <div><b id="brandName">سامانه مدرسه</b><small id="brandYear">—</small></div>
+    </div>
+    <nav id="nav"></nav>
+    <div class="side-foot">
+      <button class="btn full" onclick="exportExcel()">⬇️ خروجی اکسل</button>
+      <label class="btn full" style="cursor:pointer">⬆️ ورود اکسل<input type="file" id="xlsIn" accept=".xlsx,.xls,.csv" hidden></label>
+      <button class="btn full bad" onclick="doLogout()">🚪 خروج</button>
+    </div>
+  </aside>
+  <main>
+    <header class="topbar neu">
+      <div class="search neu-in"><span>🔎</span><input id="q" placeholder="جستجو..."></div>
+      <div class="top-actions">
+        <span class="pill neu-s" id="datePill"></span>
+        <div class="user-chip neu-s"><div class="av" id="avatar">؟</div><div><b id="userName" style="font-size:.83rem">—</b><small style="display:block;color:var(--muted);font-size:.7rem" id="userRole">—</small></div></div>
+      </div>
+    </header>
+    <section id="view"></section>
+  </main>
+</div>
+
+<div id="printSheet"></div>
+<div id="toasts"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+/* ================================================================
+   1) ابزار پایه
+   ================================================================ */
+const $  = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>[...r.querySelectorAll(s)];
+const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const isoToday = () => new Date().toISOString().slice(0,10);
+const faDate = d => { if(!d) return '—'; try{ return new Date(d).toLocaleDateString('fa-IR'); }catch(e){ return d; } };
+const money = n => (Number(n)||0).toLocaleString('fa-IR');
+const num = n => (Number(n)||0).toLocaleString('fa-IR');
+const toFa = n => String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
+const normName = sn => String(sn||'').replace(/ي/g,'ی').replace(/ك/g,'ک').replace(/\u200c/g,' ').replace(/\s+/g,' ').trim();
+
+const LS = 'school_v2';
+const SESSION = 'school_v2_session';
+let DB = {};
+let CU = null;
+
+const ROLES = {
+  admin:   {label:'مدیر',    color:'#8b5cf6'},
+  vice:    {label:'معاون',   color:'#5b7cfa'},
+  teacher: {label:'دبیر',    color:'#0ea5e9'},
+  staff:   {label:'پرسنل',   color:'#22c55e'},
+  parent:  {label:'والدین',  color:'#f59e0b'}
+};
+
+/* ================================================================
+   2) دیتابیس (شروع با فقط ادمین)
+   ================================================================ */
+function emptyDB(){
+  return {
+    settings:{ school:'نام مدرسه شما', year:'1405-1406', viceName:'معاون آموزشی', address:'', phone:'' },
+    users: [
+      {id:'u_admin', username:'admin', password:'admin', role:'admin', name:'مدیر مدرسه', active:true}
+    ],
+    classes:[], subjects:[], students:[], teachers:[],
+    attendance:[], grades:[], homework:[], exams:[],
+    payments:[], discounts:[], expenses:[],
+    commitments:[], discipline:[], gates:[],
+    messages:[], objections:[], announcements:[], events:[], meetings:[],
+    schedule:[], library:{books:[],loans:[]}
+  };
+}
+
+function save(){ try{ localStorage.setItem(LS, JSON.stringify(DB)); }catch(e){ toast('خطا در ذخیره‌سازی','bad'); } }
+
+function load(){
+  const raw = localStorage.getItem(LS);
+  if(raw){ try{ DB = JSON.parse(raw); }catch(e){ DB = null; } }
+  if(!DB || !DB.users){ DB = emptyDB(); save(); }
+  migrate();
+}
+
+function migrate(){
+  const def = emptyDB();
+  Object.keys(def).forEach(k=>{ if(!(k in DB)) DB[k] = def[k]; });
+  if(!DB.library) DB.library = {books:[],loans:[]};
+  if(!DB.library.books) DB.library.books = [];
+  if(!DB.library.loans) DB.library.loans = [];
+  if(!DB.users.find(u=>u.role==='admin')){
+    DB.users.push({id:'u_admin', username:'admin', password:'admin', role:'admin', name:'مدیر مدرسه', active:true});
+  }
+  save();
+}
+
+/* ================================================================
+   3) دسترسی‌ها
+   ================================================================ */
+const PERMS = {
+  editUsers:      r => r==='admin',
+  editStudents:   r => r==='admin',
+  editTeachers:   r => r==='admin',
+  editClasses:    r => r==='admin',
+  editSubjects:   r => r==='admin',
+  editSettings:   r => r==='admin',
+  resetDB:        r => r==='admin',
+  manageAttendance: r => ['admin','vice','teacher','staff'].includes(r),
+  manageGrades:   r => ['admin','vice','teacher'].includes(r),
+  manageHomework: r => ['admin','vice','teacher'].includes(r),
+  manageExams:    r => ['admin','vice','teacher'].includes(r),
+  manageDiscipline: r => ['admin','vice','teacher'].includes(r),
+  manageFees:     r => ['admin','vice'].includes(r),
+  manageGate:     r => ['admin','vice','staff'].includes(r),
+  manageMessages: r => ['admin','vice','teacher','staff'].includes(r),
+  manageAnnounce: r => ['admin','vice','teacher','staff'].includes(r),
+  manageCalendar: r => ['admin','vice','teacher','staff'].includes(r),
+  manageMeetings: r => ['admin','vice','teacher'].includes(r),
+  manageLibrary:  r => ['admin','vice','staff'].includes(r),
+  manageCommit:   r => ['admin','vice','teacher'].includes(r),
+  manageObjections: r => ['admin','vice'].includes(r)
+};
+
+function can(perm){ return CU ? (PERMS[perm]?.(CU.role) || false) : false; }
+
+function requireAdmin(msg){
+  if(CU?.role !== 'admin'){
+    toast(msg || '⛔ این عملیات فقط برای مدیر مجاز است','bad');
+    return false;
+  }
+  return true;
+}
+
+/* ================================================================
+   4) Toast & Modal
+   ================================================================ */
+function toast(msg, type='ok'){
+  const d = document.createElement('div');
+  d.className = 'toast '+type;
+  d.textContent = msg;
+  $('#toasts').appendChild(d);
+  setTimeout(()=>{ d.style.opacity='0'; d.style.transition='.3s'; setTimeout(()=>d.remove(),320); }, 3000);
+}
+
+function modal(title, html, onOk, okText='ذخیره', wide){
+  const m = document.createElement('div');
+  m.className = 'modal-bg';
+  m.innerHTML = `<div class="modal ${wide?'wide':''} neu">
+      <div class="modal-head"><h3>${title}</h3><button class="icon-btn" data-close>✕</button></div>
+      <div class="modal-body">${html}</div>
+      <div class="modal-foot">
+        ${onOk ? `<button class="btn primary" data-ok>${okText}</button>` : ''}
+        <button class="btn" data-close>بستن</button>
+      </div>
+    </div>`;
+  document.body.appendChild(m);
+  m.addEventListener('click', e=>{
+    if(e.target === m || e.target.closest('[data-close]')) m.remove();
+    if(e.target.closest('[data-ok]')){
+      if(onOk && onOk(m) === false) return;
+      m.remove();
+    }
+  });
+  const f = m.querySelector('input,select,textarea'); if(f) setTimeout(()=>f.focus(),60);
+  return m;
+}
+
+/* ================================================================
+   5) Auth
+   ================================================================ */
+function doLogin(e){
+  e.preventDefault();
+  const u = $('#loginUser').value.trim();
+  const p = $('#loginPass').value;
+  const user = DB.users.find(x=>x.username===u && x.password===p);
+  if(!user){ $('#loginErr').textContent = 'نام کاربری یا رمز اشتباه است.'; return; }
+  if(!user.active){ $('#loginErr').textContent = 'حساب غیرفعال است.'; return; }
+  CU = user;
+  localStorage.setItem(SESSION, user.id);
+  showApp();
+}
+
+function doLogout(){
+  if(!confirm('از حساب خارج می‌شوید؟')) return;
+  CU = null;
+  localStorage.removeItem(SESSION);
+  $('#loginScreen').style.display = '';
+  $('#app').style.display = 'none';
+  $('#loginUser').value = '';
+  $('#loginPass').value = '';
+  $('#loginErr').textContent = '';
+}
+
+function showApp(){
+  $('#loginScreen').style.display = 'none';
+  $('#app').style.display = '';
+  $('#brandName').textContent = DB.settings.school || 'سامانه مدرسه';
+  $('#brandYear').textContent = DB.settings.year || '';
+  $('#userName').textContent = CU.name;
+  $('#userRole').textContent = ROLES[CU.role].label;
+  $('#avatar').textContent = CU.name.charAt(0);
+  $('#datePill').textContent = new Date().toLocaleDateString('fa-IR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  state.tab = firstTabForRole();
+  state.page = 1;
+  state.q = '';
+  render();
+}
+
+/* ================================================================
+   6) Navigation
+   ================================================================ */
+const state = { tab:'dash', q:'', cls:'all', page:1, subTab:'' };
+const attState = { cls:'', date: isoToday() };
+
+const TABS = {
+  admin: [
+    ['dash','📊','داشبورد'],
+    ['students','🎓','دانش‌آموزان'],
+    ['teachers','👨‍🏫','دبیران و پرسنل'],
+    ['classes','🏫','کلاس‌ها'],
+    ['subjects','📚','دروس'],
+    ['users','🔐','کاربران'],
+    ['attendance','🗓️','حضور و غیاب'],
+    ['grades','📝','نمرات'],
+    ['reportcard','🎓','کارنامه'],
+    ['homework','📒','تکالیف'],
+    ['exams','✏️','امتحانات'],
+    ['schedule','⏰','برنامه هفتگی'],
+    ['tuition','💰','شهریه'],
+    ['expenses','💸','هزینه‌ها'],
+    ['commit','📋','تعهدات'],
+    ['discipline','⚖️','انضباط'],
+    ['gate','🚪','خروج و تاخیر'],
+    ['library','📖','کتابخانه'],
+    ['messages','💬','پیام‌رسان'],
+    ['objections','📮','اعتراض‌ها'],
+    ['announce','📢','اطلاعیه‌ها'],
+    ['calendar','📅','تقویم'],
+    ['meetings','🤝','جلسات'],
+    ['reports','📈','گزارش‌ها'],
+    ['settings','⚙️','تنظیمات']
+  ],
+  vice: [
+    ['dash','📊','داشبورد'],
+    ['students','🎓','دانش‌آموزان'],
+    ['teachers','👨‍🏫','دبیران'],
+    ['classes','🏫','کلاس‌ها'],
+    ['subjects','📚','دروس'],
+    ['attendance','🗓️','حضور و غیاب'],
+    ['grades','📝','نمرات'],
+    ['reportcard','🎓','کارنامه'],
+    ['homework','📒','تکالیف'],
+    ['exams','✏️','امتحانات'],
+    ['schedule','⏰','برنامه هفتگی'],
+    ['commit','📋','تعهدات'],
+    ['discipline','⚖️','انضباط'],
+    ['gate','🚪','خروج و تاخیر'],
+    ['library','📖','کتابخانه'],
+    ['messages','💬','پیام‌رسان'],
+    ['objections','📮','اعتراض‌ها'],
+    ['announce','📢','اطلاعیه‌ها'],
+    ['calendar','📅','تقویم'],
+    ['meetings','🤝','جلسات'],
+    ['reports','📈','گزارش‌ها']
+  ],
+  teacher: [
+    ['dash','📊','داشبورد'],
+    ['students','🎓','دانش‌آموزان'],
+    ['attendance','🗓️','حضور و غیاب'],
+    ['grades','📝','نمرات'],
+    ['reportcard','🎓','کارنامه'],
+    ['homework','📒','تکالیف'],
+    ['exams','✏️','امتحانات'],
+    ['schedule','⏰','برنامه هفتگی'],
+    ['discipline','⚖️','انضباط'],
+    ['messages','💬','پیام‌رسان'],
+    ['announce','📢','اطلاعیه‌ها'],
+    ['calendar','📅','تقویم'],
+    ['meetings','🤝','جلسات']
+  ],
+  staff: [
+    ['dash','📊','داشبورد'],
+    ['attendance','🗓️','حضور و غیاب'],
+    ['gate','🚪','خروج و تاخیر'],
+    ['library','📖','کتابخانه'],
+    ['messages','💬','پیام‌رسان'],
+    ['announce','📢','اطلاعیه‌ها'],
+    ['calendar','📅','تقویم']
+  ],
+  parent: [
+    ['pdash','🏠','داشبورد'],
+    ['patt','🗓️','حضور فرزند'],
+    ['pgrades','📝','نمرات'],
+    ['preport','🎓','کارنامه'],
+    ['ptuition','💰','شهریه'],
+    ['pmessages','💬','پیام‌ها'],
+    ['pannounce','📢','اطلاعیه‌ها'],
+    ['pcalendar','📅','تقویم'],
+    ['pmeetings','🤝','جلسات']
+  ]
+};
+
+function firstTabForRole(){ return (TABS[CU.role]||[['dash']])[0][0]; }
+function go(tab){ state.tab = tab; state.page = 1; render(); window.scrollTo({top:0,behavior:'smooth'}); }
+
+function render(){
+  const tabs = TABS[CU.role] || [];
+  const unread = unreadCount();
+  $('#nav').innerHTML = tabs.map(([k,i,t])=>{
+    const badge = (k==='pmessages' || k==='messages') && unread>0 ? `<span class="nav-badge">${num(unread)}</span>` : '';
+    return `<button class="nav-btn ${state.tab===k?'active':''}" onclick="go('${k}')"><span>${i}</span>${t}${badge}</button>`;
+  }).join('');
+
+  const map = {
+    dash:vDash, students:vStudents, teachers:vTeachers, classes:vClasses, subjects:vSubjects,
+    users:vUsers, attendance:vAttendance, grades:vGrades, reportcard:vReportCard,
+    homework:vHomework, exams:vExams, schedule:vSchedule,
+    tuition:vTuition, expenses:vExpenses, commit:vCommit, discipline:vDiscipline, gate:vGate,
+    library:vLibrary, messages:vMessages, objections:vObjections, announce:vAnnounce,
+    calendar:vCalendar, meetings:vMeetings, reports:vReports, settings:vSettings,
+    pdash:vParentDash, patt:vParentAtt, pgrades:vParentGrades, preport:vParentReport,
+    ptuition:vParentTuition, pmessages:vParentMessages, pannounce:vParentAnnounce,
+    pcalendar:vCalendar, pmeetings:vParentMeetings
+  };
+  $('#view').innerHTML = (map[state.tab] || vDash)();
+}
+
+function unreadCount(){
+  if(!CU) return 0;
+  if(CU.role === 'parent'){
+    return DB.messages.filter(m => m.toStudentIds?.includes(CU.studentId) && !m.readBy?.includes(CU.id)).length;
+  }
+  return DB.messages.filter(m => m.fromUserId !== CU.id && !m.readBy?.includes(CU.id) && m.toStaffRoles?.includes(CU.role)).length;
+}
+
+/* ================================================================
+   7) Helpers
+   ================================================================ */
+const getCls = id => DB.classes.find(c=>c.id===id) || {name:'—',field:'—',grade:'—',id:''};
+const getStudent = id => DB.students.find(s=>s.id===id);
+const getTeacher = id => DB.teachers.find(t=>t.id===id);
+const getSub = id => DB.subjects.find(s=>s.id===id);
+const paidOf = id => DB.payments.filter(p=>p.studentId===id).reduce((s,p)=>s+(+p.amount||0),0);
+const discountOf = id => DB.discounts.filter(d=>d.studentId===id).reduce((s,d)=>s+(+d.amount||0),0);
+const netFeeOf = s => Math.max(0, (s.fee||0) - discountOf(s.id));
+const remainingOf = s => Math.max(0, netFeeOf(s) - paidOf(s.id));
+function studentsOfClass(cid){ return DB.students.filter(s=>s.classId===cid); }
+function studentName(id){ const s = getStudent(id); return s ? s.name : '—'; }
+function parentUserOfStudent(sid){ return DB.users.find(u=>u.role==='parent' && u.studentId===sid); }
+function isSetupEmpty(){ return DB.students.length===0 && DB.teachers.length===0 && DB.classes.length===0; }
+
+/* ================================================================
+   8) Dashboard
+   ================================================================ */
+function vDash(){
+  const today = isoToday();
+  const att = DB.attendance.filter(a=>a.date===today);
+  const present = att.filter(a=>a.status==='حاضر').length;
+  const absent  = att.filter(a=>a.status==='غایب').length;
+  const debt = DB.students.reduce((s,x)=> s + remainingOf(x), 0);
+  const objOpen = DB.objections.filter(o=>o.status==='باز').length;
+
+  if(isSetupEmpty()){
+    return `
+    <div class="welcome neu">
+      <h2>👋 خوش آمدید ${esc(CU.name)}</h2>
+      <p>سامانه خالی است. برای شروع، مراحل زیر را طی کنید:</p>
+      <div class="steps">
+        <div class="step"><div class="n">۱</div><div class="t">کلاس بسازید</div><div class="d">مثلاً دهم مکانیک الف</div></div>
+        <div class="step"><div class="n">۲</div><div class="t">دروس را تعریف کنید</div><div class="d">لیست دروس مدرسه</div></div>
+        <div class="step"><div class="n">۳</div><div class="t">کاربران را بسازید</div><div class="d">دبیران، پرسنل، والدین</div></div>
+        <div class="step"><div class="n">۴</div><div class="t">دانش‌آموز اضافه کنید</div><div class="d">دستی یا از اکسل</div></div>
+      </div>
+      <div style="margin-top:22px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+        <button class="btn primary" onclick="go('classes')">🏫 ساخت اولین کلاس</button>
+        <button class="btn" onclick="go('subjects')">📚 تعریف دروس</button>
+        <button class="btn" onclick="go('users')">🔐 ساخت کاربر</button>
+        <button class="btn" onclick="go('students')">🎓 افزودن دانش‌آموز</button>
+      </div>
+    </div>`;
+  }
+
+  const clsRows = DB.classes.map(c=>{
+    const n = studentsOfClass(c.id).length;
+    return `<tr><td>${esc(c.name)}</td><td>${esc(c.field)}</td><td>${esc(c.grade)}</td>
+      <td><span class="badge b-info">${num(n)} نفر</span></td></tr>`;
+  }).join('');
+
+  return `
+  <div class="stats">
+    <div class="stat neu"><div class="i">🎓</div><div class="t">کل دانش‌آموزان</div><div class="v">${num(DB.students.length)}</div></div>
+    <div class="stat neu"><div class="i">👨‍🏫</div><div class="t">دبیران/پرسنل</div><div class="v">${num(DB.teachers.length)}</div></div>
+    <div class="stat neu"><div class="i">👥</div><div class="t">کاربران</div><div class="v">${num(DB.users.length)}</div></div>
+    <div class="stat neu"><div class="i">✅</div><div class="t">حاضر امروز</div><div class="v" style="color:var(--ok)">${num(present)}</div></div>
+    <div class="stat neu"><div class="i">❌</div><div class="t">غایب امروز</div><div class="v" style="color:var(--bad)">${num(absent)}</div></div>
+    <div class="stat neu"><div class="i">💰</div><div class="t">مانده شهریه</div><div class="v" style="font-size:1.05rem">${money(debt)}</div></div>
+    <div class="stat neu"><div class="i">📮</div><div class="t">اعتراض باز</div><div class="v" style="color:${objOpen>0?'var(--bad)':'var(--muted)'}">${num(objOpen)}</div></div>
+    <div class="stat neu"><div class="i">📖</div><div class="t">کتاب‌های کتابخانه</div><div class="v">${num(DB.library.books.length)}</div></div>
+  </div>
+
+  <div class="card neu">
+    <h3>⚡ دسترسی سریع</h3>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      ${can('editStudents') ? `<button class="btn primary" onclick="addStudent()">＋ دانش‌آموز</button>` : ''}
+      ${can('editTeachers') ? `<button class="btn" onclick="addTeacher()">＋ دبیر/پرسنل</button>` : ''}
+      ${can('manageAttendance') ? `<button class="btn" onclick="go('attendance')">🗓️ حضور و غیاب</button>` : ''}
+      ${can('manageMessages') ? `<button class="btn" onclick="go('messages')">💬 ارسال پیام</button>` : ''}
+      ${can('manageAnnounce') ? `<button class="btn" onclick="go('announce')">📢 اطلاعیه</button>` : ''}
+      ${can('editUsers') ? `<button class="btn" onclick="go('users')">🔐 مدیریت کاربران</button>` : ''}
+    </div>
+  </div>
+
+  <div class="card neu">
+    <h3>🏫 کلاس‌ها <span class="badge b-info">${num(DB.classes.length)}</span></h3>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>کلاس</th><th>رشته</th><th>پایه</th><th>تعداد</th></tr></thead>
+        <tbody>${clsRows || '<tr><td colspan="4" class="empty">کلاسی ثبت نشده</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+
+/* ================================================================
+   9) Students
+   ================================================================ */
+function filteredStudents(){
+  const q = state.q.trim();
+  return DB.students.filter(s=>{
+    if(state.cls !== 'all' && s.classId !== state.cls) return false;
+    if(!q) return true;
+    const c = getCls(s.classId);
+    return (s.name+' '+s.nid+' '+s.mobile+' '+c.name).includes(q);
+  }).sort((a,b)=> a.name.localeCompare(b.name,'fa'));
+}
+
+function vStudents(){
+  const list = filteredStudents();
+  const per = 50;
+  const pages = Math.max(1, Math.ceil(list.length/per));
+  if(state.page > pages) state.page = pages;
+  const slice = list.slice((state.page-1)*per, state.page*per);
+  const editable = can('editStudents');
+
+  const opts = ['<option value="all">همه کلاس‌ها</option>']
+    .concat(DB.classes.map(c=>`<option value="${c.id}" ${state.cls===c.id?'selected':''}>${esc(c.name)}</option>`)).join('');
+
+  const rows = slice.map((s,i)=>{
+    const c = getCls(s.classId);
+    const rem = remainingOf(s);
+    return `<tr>
+      <td>${num((state.page-1)*per + i + 1)}</td>
+      <td><b>${esc(s.name)}</b></td>
+      <td dir="ltr">${esc(s.nid)||'—'}</td>
+      <td dir="ltr">${esc(s.mobile)||'—'}</td>
+      <td>${esc(c.name)}</td>
+      <td>${rem>0?`<span class="badge b-warn">${money(rem)}</span>`:'<span class="badge b-ok">تسویه</span>'}</td>
+      <td style="white-space:nowrap">
+        <button class="btn sm" onclick="viewStudent('${s.id}')">👁️</button>
+        ${editable ? `<button class="btn sm" onclick="editStudent('${s.id}')">✏️</button>
+        <button class="btn sm bad" onclick="delStudent('${s.id}')">🗑️</button>` : ''}
+      </td>
+    </tr>`;
+  }).join('');
+
+  return `
+  <div class="card neu">
+    <h3>🎓 دانش‌آموزان <span class="badge b-info">${num(list.length)}</span></h3>
+    ${!editable ? `<div class="lock-notice">فقط مدیر می‌تواند دانش‌آموزان را اضافه/ویرایش/حذف کند.</div>` : ''}
+    <div class="toolbar">
+      <label class="fld" style="min-width:220px"><span>فیلتر کلاس</span>
+        <select onchange="state.cls=this.value;state.page=1;render()">${opts}</select>
+      </label>
+      ${editable ? `<button class="btn primary" onclick="addStudent()">＋ دانش‌آموز جدید</button>` : ''}
+      <button class="btn" onclick="printAttendanceSheet()">🖨️ برگه حضور</button>
+    </div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>#</th><th>نام</th><th>کد ملی</th><th>موبایل</th><th>کلاس</th><th>شهریه</th><th>عملیات</th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="7" class="empty">دانش‌آموزی یافت نشد</td></tr>'}</tbody>
+      </table>
+    </div>
+    ${pager(list.length, state.page)}
+  </div>`;
+}
+
+function pager(total, page){
+  const per = 50, pages = Math.max(1, Math.ceil(total/per));
+  if(pages<=1) return '';
+  return `<div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:16px">
+    ${Array.from({length:pages},(_,i)=>i+1).map(b=>`<button class="btn sm ${b===page?'primary':''}" onclick="state.page=${b};render()">${num(b)}</button>`).join('')}
+  </div>`;
+}
+
+function addStudent(){
+  if(!requireAdmin('افزودن دانش‌آموز فقط توسط مدیر')) return;
+  if(DB.classes.length===0){ toast('ابتدا یک کلاس بسازید','bad'); go('classes'); return; }
+  const html = `<div class="grid2">
+    <label class="fld"><span>نام و نام خانوادگی *</span><input name="name"></label>
+    <label class="fld"><span>کد ملی</span><input name="nid" dir="ltr"></label>
+    <label class="fld"><span>موبایل</span><input name="mobile" dir="ltr"></label>
+    <label class="fld"><span>کلاس</span><select name="classId">${DB.classes.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select></label>
+    <label class="fld"><span>شهریه (تومان)</span><input name="fee" type="number" min="0" value="0"></label>
+    <label class="fld"><span>نام ولی</span><input name="guardian"></label>
+    <label class="fld full"><span>یادداشت</span><textarea name="note" rows="2"></textarea></label>
+    <label class="fld full"><span><input type="checkbox" name="makeAccount" checked> ساخت خودکار حساب کاربری والدین</span></label>
+  </div>`;
+  modal('➕ افزودن دانش‌آموز', html, m=>{
+    const name = $('[name=name]',m).value.trim();
+    if(!name){ toast('نام الزامی','bad'); return false; }
+    const mobile = $('[name=mobile]',m).value.trim();
+    const nid = $('[name=nid]',m).value.trim();
+    const s = {id:uid(), name, nid, mobile,
+      classId: $('[name=classId]',m).value,
+      fee: +$('[name=fee]',m).value || 0,
+      guardian: $('[name=guardian]',m).value.trim(),
+      note: $('[name=note]',m).value.trim()};
+    DB.students.push(s);
+    let accountInfo = '';
+    if($('[name=makeAccount]',m).checked){
+      const existing = new Set(DB.users.map(u=>u.username));
+      let base = mobile || nid || ('p'+Math.random().toString(36).slice(2,7));
+      const uname = makeUsername(base, existing);
+      const pass = mobile && mobile.length>=4 ? mobile.slice(-4) : (nid && nid.length>=4 ? nid.slice(-4) : '1234');
+      DB.users.push({id:uid(), username:uname, password:pass, role:'parent', name:'ولی '+name, studentId:s.id, active:true});
+      accountInfo = ` | کاربری: ${uname} / ${pass}`;
+    }
+    save(); render();
+    toast('دانش‌آموز اضافه شد'+accountInfo,'ok');
+  });
+}
+
+function editStudent(id){
+  if(!requireAdmin()) return;
+  const s = getStudent(id); if(!s) return;
+  const html = `<div class="grid2">
+    <label class="fld"><span>نام *</span><input name="name" value="${esc(s.name)}"></label>
+    <label class="fld"><span>کد ملی</span><input name="nid" value="${esc(s.nid)}" dir="ltr"></label>
+    <label class="fld"><span>موبایل</span><input name="mobile" value="${esc(s.mobile)}" dir="ltr"></label>
+    <label class="fld"><span>کلاس</span><select name="classId">${DB.classes.map(c=>`<option value="${c.id}" ${c.id===s.classId?'selected':''}>${esc(c.name)}</option>`).join('')}</select></label>
+    <label class="fld"><span>شهریه</span><input name="fee" type="number" value="${s.fee||0}"></label>
+    <label class="fld"><span>نام ولی</span><input name="guardian" value="${esc(s.guardian||'')}"></label>
+    <label class="fld full"><span>یادداشت</span><textarea name="note" rows="2">${esc(s.note||'')}</textarea></label>
+  </div>`;
+  modal('✏️ ویرایش', html, m=>{
+    const name = $('[name=name]',m).value.trim();
+    if(!name){ toast('نام الزامی','bad'); return false; }
+    Object.assign(s, {name, nid:$('[name=nid]',m).value.trim(), mobile:$('[name=mobile]',m).value.trim(),
+      classId:$('[name=classId]',m).value, fee:+$('[name=fee]',m).value||0,
+      guardian:$('[name=guardian]',m).value.trim(), note:$('[name=note]',m).value.trim()});
+    save(); render(); toast('ویرایش شد');
+  });
+}
+
+function delStudent(id){
+  if(!requireAdmin()) return;
+  const s = getStudent(id); if(!s) return;
+  if(!confirm(`«${s.name}» و حساب والدین حذف شود؟`)) return;
+  DB.students = DB.students.filter(x=>x.id!==id);
+  DB.users = DB.users.filter(u=>u.studentId!==id);
+  ['attendance','payments','discounts','commitments','gates','grades','discipline'].forEach(k=>{
+    DB[k] = DB[k].filter(x=>x.studentId!==id);
+  });
+  save(); render(); toast('حذف شد','warn');
+}
+
+function viewStudent(id){
+  const s = getStudent(id); if(!s) return;
+  const c = getCls(s.classId);
+  const att = DB.attendance.filter(a=>a.studentId===id);
+  const present = att.filter(a=>a.status==='حاضر').length;
+  const paid = paidOf(id), rem = remainingOf(s), disc = discountOf(id);
+  const grades = DB.grades.filter(x=>x.studentId===id);
+  const pu = parentUserOfStudent(id);
+
+  const html = `
+    <div class="grid2">
+      <div class="neu-in" style="padding:12px"><small style="color:var(--muted)">نام</small><div><b>${esc(s.name)}</b></div></div>
+      <div class="neu-in" style="padding:12px"><small style="color:var(--muted)">کلاس</small><div>${esc(c.name)}</div></div>
+      <div class="neu-in" style="padding:12px"><small style="color:var(--muted)">کد ملی</small><div dir="ltr">${esc(s.nid)||'—'}</div></div>
+      <div class="neu-in" style="padding:12px"><small style="color:var(--muted)">موبایل</small><div dir="ltr">${esc(s.mobile)||'—'}</div></div>
+      <div class="neu-in" style="padding:12px"><small style="color:var(--muted)">شهریه</small><div>${money(s.fee)}</div></div>
+      <div class="neu-in" style="padding:12px"><small style="color:var(--muted)">تخفیف</small><div>${money(disc)}</div></div>
+      <div class="neu-in" style="padding:12px"><small style="color:var(--muted)">پرداختی</small><div>${money(paid)}</div></div>
+      <div class="neu-in" style="padding:12px"><small style="color:var(--muted)">مانده</small><div style="color:${rem>0?'var(--bad)':'var(--ok)'}"><b>${money(rem)}</b></div></div>
+      <div class="neu-in" style="padding:12px"><small style="color:var(--muted)">حساب والدین</small><div>${pu ? `<span dir="ltr">${esc(pu.username)}</span> / ${esc(pu.password)}` : '—'}</div></div>
+      <div class="neu-in" style="padding:12px"><small style="color:var(--muted)">حضور</small><div>${num(present)} از ${num(att.length)}</div></div>
+    </div>
+    <h4 style="margin:14px 0 8px;font-size:.85rem">📝 نمرات (${num(grades.length)})</h4>
+    <div class="hint">${grades.length ? grades.slice(-6).map(g=>`• ${esc(g.subject)} (${esc(g.term)}): <b>${num(g.score)}</b>`).join('<br>') : 'ندارد'}</div>
+  `;
+  modal('👤 '+esc(s.name), html, null, '', true);
+}
+
+function makeUsername(base, existing){
+  base = String(base||'').replace(/[^a-zA-Z0-9]/g,'');
+  if(!base) base = 'u'+Math.random().toString(36).slice(2,7);
+  let u = base, n = 1;
+  while(existing.has(u)){ u = base+n; n++; }
+  existing.add(u);
+  return u;
+}
+
+/* ================================================================
+   10) Teachers
+   ================================================================ */
+function vTeachers(){
+  const q = state.q.trim();
+  const list = DB.teachers.filter(t=> !q || (t.name+' '+t.nid+' '+t.mobile+' '+t.role).includes(q));
+  const editable = can('editTeachers');
+  const rows = list.map((t,i)=>{
+    const acc = DB.users.find(u=>u.teacherId===t.id);
+    return `<tr>
+      <td>${num(i+1)}</td>
+      <td><b>${esc(t.name)}</b></td>
+      <td dir="ltr">${esc(t.nid)||'—'}</td>
+      <td dir="ltr">${esc(t.mobile)||'—'}</td>
+      <td><span class="badge ${t.role.includes('دبیر')?'b-info':'b-mut'}">${esc(t.role)}</span></td>
+      <td>${acc ? `<span dir="ltr" style="font-size:.72rem">${esc(acc.username)}</span>` : '—'}</td>
+      <td>${editable ? `<button class="btn sm" onclick="editTeacher('${t.id}')">✏️</button><button class="btn sm bad" onclick="delTeacher('${t.id}')">🗑️</button>` : '—'}</td>
+    </tr>`;
+  }).join('');
+  return `
+  <div class="card neu">
+    <h3>👨‍🏫 دبیران و پرسنل <span class="badge b-info">${num(list.length)}</span></h3>
+    ${!editable ? `<div class="lock-notice">فقط مدیر می‌تواند دبیران را مدیریت کند.</div>` : ''}
+    <div class="toolbar">
+      ${editable ? `<button class="btn primary" onclick="addTeacher()">＋ افزودن</button>` : ''}
+    </div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>#</th><th>نام</th><th>کد ملی</th><th>موبایل</th><th>نقش</th><th>کاربری</th><th>عملیات</th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="7" class="empty">موردی یافت نشد</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+
+function addTeacher(){
+  if(!requireAdmin()) return;
+  const html = `<div class="grid2">
+    <label class="fld"><span>نام *</span><input name="name"></label>
+    <label class="fld"><span>کد ملی</span><input name="nid" dir="ltr"></label>
+    <label class="fld"><span>موبایل</span><input name="mobile" dir="ltr"></label>
+    <label class="fld"><span>نقش</span><select name="role"><option>دبیر</option><option>پرسنل</option><option>معاون</option></select></label>
+    <label class="fld full"><span><input type="checkbox" name="makeAccount" checked> ساخت خودکار حساب کاربری</span></label>
+  </div>`;
+  modal('➕ افزودن', html, m=>{
+    const name = $('[name=name]',m).value.trim();
+    if(!name){ toast('نام الزامی','bad'); return false; }
+    const mobile = $('[name=mobile]',m).value.trim();
+    const nid = $('[name=nid]',m).value.trim();
+    const role = $('[name=role]',m).value;
+    const t = {id:uid(), name, mobile, nid, role};
+    DB.teachers.push(t);
+    let info = '';
+    if($('[name=makeAccount]',m).checked){
+      const existing = new Set(DB.users.map(u=>u.username));
+      const base = mobile || nid || ('t'+Math.random().toString(36).slice(2,7));
+      const uname = makeUsername(base, existing);
+      const pass = mobile && mobile.length>=4 ? mobile.slice(-4) : '1234';
+      const r = role==='معاون' ? 'vice' : (role==='پرسنل' ? 'staff' : 'teacher');
+      DB.users.push({id:uid(), username:uname, password:pass, role:r, name, teacherId:t.id, active:true});
+      info = ` | کاربری: ${uname} / ${pass}`;
+    }
+    save(); render();
+    toast('افزوده شد'+info,'ok');
+  });
+}
+function editTeacher(id){
+  if(!requireAdmin()) return;
+  const t = DB.teachers.find(x=>x.id===id); if(!t) return;
+  const html = `<div class="grid2">
+    <label class="fld"><span>نام</span><input name="name" value="${esc(t.name)}"></label>
+    <label class="fld"><span>کد ملی</span><input name="nid" value="${esc(t.nid||'')}" dir="ltr"></label>
+    <label class="fld"><span>موبایل</span><input name="mobile" value="${esc(t.mobile||'')}" dir="ltr"></label>
+    <label class="fld"><span>نقش</span><select name="role"><option ${t.role==='دبیر'?'selected':''}>دبیر</option><option ${t.role==='پرسنل'?'selected':''}>پرسنل</option><option ${t.role==='معاون'?'selected':''}>معاون</option></select></label>
+  </div>`;
+  modal('✏️ ویرایش', html, m=>{
+    Object.assign(t, {name:$('[name=name]',m).value.trim()||t.name,
+      nid:$('[name=nid]',m).value.trim(), mobile:$('[name=mobile]',m).value.trim(), role:$('[name=role]',m).value});
+    save(); render(); toast('ویرایش شد');
+  });
+}
+function delTeacher(id){
+  if(!requireAdmin()) return;
+  const t = DB.teachers.find(x=>x.id===id); if(!t) return;
+  if(!confirm(`«${t.name}» و حساب کاربری حذف شود؟`)) return;
+  DB.teachers = DB.teachers.filter(x=>x.id!==id);
+  DB.users = DB.users.filter(u=>u.teacherId!==id);
+  save(); render(); toast('حذف شد','warn');
+}
+
+/* ================================================================
+   11) Classes (NEW - only admin)
+   ================================================================ */
+function vClasses(){
+  const editable = can('editClasses');
+  const rows = DB.classes.map(c=>{
+    const n = studentsOfClass(c.id).length;
+    return `<tr>
+      <td><b>${esc(c.name)}</b></td>
+      <td>${esc(c.grade)}</td>
+      <td>${esc(c.field)}</td>
+      <td>${esc(c.sec||'—')}</td>
+      <td><span class="badge b-info">${num(n)}</span></td>
+      <td>${editable ? `<button class="btn sm" onclick="editClass('${c.id}')">✏️</button><button class="btn sm bad" onclick="delClass('${c.id}')">🗑️</button>` : '—'}</td>
+    </tr>`;
+  }).join('');
+  return `
+  <div class="card neu">
+    <h3>🏫 کلاس‌ها <span class="badge b-info">${num(DB.classes.length)}</span></h3>
+    ${!editable ? `<div class="lock-notice">فقط مدیر می‌تواند کلاس‌ها را مدیریت کند.</div>` : ''}
+    <div class="toolbar">
+      ${editable ? `<button class="btn primary" onclick="addClass()">＋ کلاس جدید</button>` : ''}
+    </div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>نام</th><th>پایه</th><th>رشته</th><th>شعبه</th><th>دانش‌آموز</th><th>عملیات</th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="6" class="empty">کلاسی ثبت نشده</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+function addClass(){
+  if(!requireAdmin()) return;
+  const html = `<div class="grid2">
+    <label class="fld full"><span>نام کلاس *</span><input name="name" placeholder="مثلاً دهم مکانیک الف"></label>
+    <label class="fld"><span>پایه</span><select name="grade"><option>دهم</option><option>یازدهم</option><option>دوازدهم</option></select></label>
+    <label class="fld"><span>رشته</span><input name="field" placeholder="مثلاً مکانیک"></label>
+    <label class="fld full"><span>شعبه (اختیاری)</span><input name="sec" placeholder="الف، ب، ..."></label>
+  </div>`;
+  modal('➕ کلاس جدید', html, m=>{
+    const name = $('[name=name]',m).value.trim();
+    if(!name){ toast('نام الزامی','bad'); return false; }
+    DB.classes.push({id:uid(), name, grade:$('[name=grade]',m).value,
+      field:$('[name=field]',m).value.trim(), sec:$('[name=sec]',m).value.trim()});
+    save(); render(); toast('کلاس اضافه شد');
+  });
+}
+function editClass(id){
+  if(!requireAdmin()) return;
+  const c = DB.classes.find(x=>x.id===id); if(!c) return;
+  const html = `<div class="grid2">
+    <label class="fld full"><span>نام</span><input name="name" value="${esc(c.name)}"></label>
+    <label class="fld"><span>پایه</span><select name="grade">${['دهم','یازدهم','دوازدهم'].map(g=>`<option ${g===c.grade?'selected':''}>${g}</option>`).join('')}</select></label>
+    <label class="fld"><span>رشته</span><input name="field" value="${esc(c.field)}"></label>
+    <label class="fld full"><span>شعبه</span><input name="sec" value="${esc(c.sec||'')}"></label>
+  </div>`;
+  modal('✏️ ویرایش کلاس', html, m=>{
+    Object.assign(c, {name:$('[name=name]',m).value.trim()||c.name, grade:$('[name=grade]',m).value,
+      field:$('[name=field]',m).value.trim(), sec:$('[name=sec]',m).value.trim()});
+    save(); render(); toast('ویرایش شد');
+  });
+}
+function delClass(id){
+  if(!requireAdmin()) return;
+  if(studentsOfClass(id).length){ toast('کلاس دارای دانش‌آموز است، ابتدا آنها را منتقل کنید','bad'); return; }
+  if(!confirm('کلاس حذف شود؟')) return;
+  DB.classes = DB.classes.filter(x=>x.id!==id);
+  save(); render(); toast('حذف شد','warn');
+}
+
+/* ================================================================
+   12) Subjects (NEW)
+   ================================================================ */
+function vSubjects(){
+  const editable = can('editSubjects');
+  const rows = DB.subjects.map(s=>`
+    <tr>
+      <td>${esc(s.name)}</td>
+      <td>${esc(s.code||'—')}</td>
+      <td>${s.units||'—'}</td>
+      <td>${editable ? `<button class="btn sm" onclick="editSub('${s.id}')">✏️</button><button class="btn sm bad" onclick="delSub('${s.id}')">🗑️</button>` : '—'}</td>
+    </tr>
+  `).join('');
+  return `
+  <div class="card neu">
+    <h3>📚 دروس <span class="badge b-info">${num(DB.subjects.length)}</span></h3>
+    ${!editable ? `<div class="lock-notice">فقط مدیر می‌تواند دروس را مدیریت کند.</div>` : ''}
+    <div class="toolbar">
+      ${editable ? `<button class="btn primary" onclick="addSub()">＋ درس جدید</button>
+      <button class="btn" onclick="bulkAddSubs()">📥 افزودن گروهی</button>` : ''}
+    </div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>نام</th><th>کد</th><th>واحد</th><th>عملیات</th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="4" class="empty">درسی تعریف نشده</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+function addSub(){
+  if(!requireAdmin()) return;
+  const html = `<div class="grid2">
+    <label class="fld full"><span>نام درس *</span><input name="name"></label>
+    <label class="fld"><span>کد</span><input name="code" dir="ltr"></label>
+    <label class="fld"><span>واحد</span><input name="units" type="number" value="1"></label>
+  </div>`;
+  modal('➕ درس جدید', html, m=>{
+    const name = $('[name=name]',m).value.trim();
+    if(!name){ toast('نام الزامی','bad'); return false; }
+    DB.subjects.push({id:uid(), name, code:$('[name=code]',m).value.trim(), units:+$('[name=units]',m).value||1});
+    save(); render(); toast('ثبت شد');
+  });
+}
+function bulkAddSubs(){
+  if(!requireAdmin()) return;
+  const html = `<label class="fld"><span>هر خط یک درس</span><textarea name="list" rows="10" placeholder="ریاضی ۱&#10;فارسی&#10;فیزیک"></textarea></label>`;
+  modal('📥 افزودن گروهی دروس', html, m=>{
+    const lines = $('[name=list]',m).value.split('\n').map(x=>x.trim()).filter(Boolean);
+    lines.forEach(n=> DB.subjects.push({id:uid(), name:n, code:'', units:1}));
+    save(); render(); toast(`${num(lines.length)} درس اضافه شد`,'ok');
+  });
+}
+function editSub(id){
+  if(!requireAdmin()) return;
+  const s = DB.subjects.find(x=>x.id===id); if(!s) return;
+  const html = `<div class="grid2">
+    <label class="fld full"><span>نام</span><input name="name" value="${esc(s.name)}"></label>
+    <label class="fld"><span>کد</span><input name="code" value="${esc(s.code||'')}" dir="ltr"></label>
+    <label class="fld"><span>واحد</span><input name="units" type="number" value="${s.units||1}"></label>
+  </div>`;
+  modal('✏️ ویرایش', html, m=>{
+    Object.assign(s, {name:$('[name=name]',m).value.trim()||s.name, code:$('[name=code]',m).value.trim(), units:+$('[name=units]',m).value||1});
+    save(); render(); toast('ویرایش شد');
+  });
+}
+function delSub(id){
+  if(!requireAdmin()) return;
+  if(!confirm('درس حذف شود؟')) return;
+  DB.subjects = DB.subjects.filter(x=>x.id!==id);
+  save(); render(); toast('حذف شد','warn');
+}
+
+/* ================================================================
+   13) Users (ONLY ADMIN)
+   ================================================================ */
+function vUsers(){
+  const q = state.q.trim();
+  const list = DB.users.filter(u=> !q || (u.name+' '+u.username).includes(q)).sort((a,b)=>a.role.localeCompare(b.role));
+  const rows = list.map((u,i)=>`
+    <tr>
+      <td>${num(i+1)}</td>
+      <td>${esc(u.name)}</td>
+      <td dir="ltr">${esc(u.username)}</td>
+      <td dir="ltr" style="font-size:.72rem">${esc(u.password)}</td>
+      <td><span class="badge ${u.role==='admin'?'b-pri':u.role==='vice'?'b-info':u.role==='teacher'?'b-ok':u.role==='staff'?'b-mut':'b-warn'}">${ROLES[u.role].label}</span></td>
+      <td>${u.active ? '<span class="badge b-ok">فعال</span>' : '<span class="badge b-bad">غیرفعال</span>'}</td>
+      <td>${u.id===CU.id ? '<span class="badge b-mut">خودتان</span>' : `
+        <button class="btn sm" onclick="editUser('${u.id}')">✏️</button>
+        <button class="btn sm ${u.active?'warn':'ok'}" onclick="toggleUser('${u.id}')">${u.active?'🚫':'✅'}</button>
+        <button class="btn sm bad" onclick="delUser('${u.id}')">🗑️</button>`}</td>
+    </tr>
+  `).join('');
+  return `
+  <div class="card neu">
+    <h3>🔐 کاربران <span class="badge b-info">${num(list.length)}</span></h3>
+    <div class="lock-notice">فقط مدیر می‌تواند کاربران را اضافه/ویرایش/حذف کند. سایر کاربران فقط می‌توانند رمز خود را تغییر دهند.</div>
+    <div class="toolbar">
+      <button class="btn primary" onclick="addUser()">＋ کاربر جدید</button>
+    </div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>#</th><th>نام</th><th>کاربری</th><th>رمز</th><th>نقش</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="7" class="empty">کاربری یافت نشد</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+
+function addUser(){
+  if(!requireAdmin()) return;
+  const html = `<div class="grid2">
+    <label class="fld"><span>نام نمایشی *</span><input name="name"></label>
+    <label class="fld"><span>نام کاربری *</span><input name="username" dir="ltr"></label>
+    <label class="fld"><span>رمز عبور *</span><input name="password"></label>
+    <label class="fld"><span>نقش</span><select name="role">
+      ${Object.entries(ROLES).filter(([k])=>k!=='admin').map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('')}
+    </select></label>
+    <label class="fld full" id="parWrap" style="display:none"><span>دانش‌آموز (برای والدین)</span>
+      <select name="studentId"><option value="">—</option>${DB.students.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('')}</select>
+    </label>
+  </div>`;
+  const m = modal('➕ کاربر جدید', html, mm=>{
+    const name = $('[name=name]',mm).value.trim();
+    const un = $('[name=username]',mm).value.trim();
+    const pw = $('[name=password]',mm).value;
+    if(!name||!un||!pw){ toast('همه فیلدها الزامی','bad'); return false; }
+    if(DB.users.some(x=>x.username===un)){ toast('نام کاربری تکراری','bad'); return false; }
+    const role = $('[name=role]',mm).value;
+    const u = {id:uid(), name, username:un, password:pw, role, active:true};
+    if(role==='parent') u.studentId = $('[name=studentId]',mm).value;
+    DB.users.push(u);
+    save(); render(); toast('کاربر اضافه شد');
+  });
+  const sel = m.querySelector('[name=role]');
+  sel.addEventListener('change', ()=>{
+    m.querySelector('#parWrap').style.display = sel.value==='parent' ? '' : 'none';
+  });
+}
+
+function editUser(id){
+  if(!requireAdmin()) return;
+  const u = DB.users.find(x=>x.id===id); if(!u) return;
+  const html = `<div class="grid2">
+    <label class="fld"><span>نام نمایشی</span><input name="name" value="${esc(u.name)}"></label>
+    <label class="fld"><span>نام کاربری</span><input name="username" value="${esc(u.username)}" dir="ltr"></label>
+    <label class="fld"><span>رمز عبور</span><input name="password" value="${esc(u.password)}"></label>
+    <label class="fld"><span>نقش</span><select name="role" ${u.role==='admin'?'disabled':''}>
+      ${Object.entries(ROLES).map(([k,v])=>`<option value="${k}" ${k===u.role?'selected':''}>${v.label}</option>`).join('')}
+    </select></label>
+  </div>`;
+  modal('✏️ ویرایش کاربر', html, m=>{
+    const un = $('[name=username]',m).value.trim();
+    if(DB.users.some(x=>x.id!==id && x.username===un)){ toast('کاربری تکراری','bad'); return false; }
+    u.name = $('[name=name]',m).value.trim();
+    u.username = un;
+    u.password = $('[name=password]',m).value;
+    if(u.role!=='admin') u.role = $('[name=role]',m).value;
+    save(); render(); toast('ویرایش شد');
+  });
+}
+function toggleUser(id){
+  if(!requireAdmin()) return;
+  const u = DB.users.find(x=>x.id===id); if(!u) return;
+  if(u.id===CU.id){ toast('حساب خودتان را نمی‌توانید غیرفعال کنید','bad'); return; }
+  u.active = !u.active;
+  save(); render(); toast(u.active?'فعال شد':'غیرفعال شد','warn');
+}
+function delUser(id){
+  if(!requireAdmin()) return;
+  const u = DB.users.find(x=>x.id===id); if(!u) return;
+  if(u.id===CU.id){ toast('حساب خودتان را نمی‌توانید حذف کنید','bad'); return; }
+  if(!confirm(`کاربر «${u.name}» حذف شود؟`)) return;
+  DB.users = DB.users.filter(x=>x.id!==id);
+  save(); render(); toast('حذف شد','warn');
+}
+
+/* ================================================================
+   14) Attendance
+   ================================================================ */
+function attSet(k,v){ attState[k]=v; render(); }
+
+function setAtt(sid, status){
+  if(!can('manageAttendance')) return;
+  const date = attState.date;
+  const i = DB.attendance.findIndex(a=>a.studentId===sid && a.date===date);
+  if(i>=0){ DB.attendance[i].status = status; DB.attendance[i].by = CU.name; }
+  else { DB.attendance.push({id:uid(), studentId:sid, date, status, by:CU.name, at:new Date().toISOString()}); }
+  save(); render();
+}
+
+function setAllAtt(status){
+  if(!can('manageAttendance')) return;
+  studentsOfClass(attState.cls).forEach(s=>{
+    const i = DB.attendance.findIndex(a=>a.studentId===s.id && a.date===attState.date);
+    if(i>=0){ DB.attendance[i].status=status; DB.attendance[i].by=CU.name; }
+    else DB.attendance.push({id:uid(), studentId:s.id, date:attState.date, status, by:CU.name, at:new Date().toISOString()});
+  });
+  save(); render(); toast('برای همه ثبت شد');
+}
+
+function vAttendance(){
+  if(DB.classes.length===0) return '<div class="card neu"><div class="empty">ابتدا یک کلاس بسازید</div></div>';
+  if(!attState.cls) attState.cls = DB.classes[0].id;
+  const cid = attState.cls, date = attState.date;
+  const list = studentsOfClass(cid).sort((a,b)=>a.name.localeCompare(b.name,'fa'));
+  const editable = can('manageAttendance');
+  const opts = DB.classes.map(c=>`<option value="${c.id}" ${c.id===cid?'selected':''}>${esc(c.name)}</option>`).join('');
+
+  const cards = list.map(s=>{
+    const rec = DB.attendance.find(a=>a.studentId===s.id && a.date===date);
+    const st = rec ? rec.status : '';
+    return `<div class="att-card neu">
+      <div><div class="nm">${esc(s.name)}</div><div style="font-size:.72rem;color:var(--muted)" dir="ltr">${esc(s.mobile)||'—'}</div></div>
+      <div class="att-btns">
+        ${['حاضر','غایب','تاخیر','مرخصی'].map(x=>
+          `<button data-s="${x}" class="${st===x?'on':''}" ${editable?`onclick="setAtt('${s.id}','${x}')"`:'disabled'}>${x}</button>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+
+  const dayAtt = DB.attendance.filter(a=>a.date===date && list.some(s=>s.id===a.studentId));
+  const cnt = st => dayAtt.filter(a=>a.status===st).length;
+
+  return `
+  <div class="card neu">
+    <h3>🗓️ حضور و غیاب ${!editable?'<span class="badge b-mut">فقط مشاهده</span>':''}</h3>
+    <div class="toolbar">
+      <label class="fld" style="min-width:210px"><span>کلاس</span>
+        <select onchange="attSet('cls',this.value)">${opts}</select></label>
+      <label class="fld" style="min-width:170px"><span>تاریخ</span>
+        <input type="date" value="${date}" onchange="attSet('date',this.value)"></label>
+      ${editable ? `<button class="btn ok" onclick="setAllAtt('حاضر')">✅ همه حاضر</button>
+      <button class="btn warn" onclick="setAllAtt('غایب')">❌ همه غایب</button>` : ''}
+      <button class="btn primary" onclick="printAttendanceSheet()">🖨️ پرینت A4</button>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
+      <span class="chip">حاضر: ${num(cnt('حاضر'))}</span>
+      <span class="chip">غایب: ${num(cnt('غایب'))}</span>
+      <span class="chip">تاخیر: ${num(cnt('تاخیر'))}</span>
+      <span class="chip">مرخصی: ${num(cnt('مرخصی'))}</span>
+      <span class="chip">ثبت‌نشده: ${num(list.length - dayAtt.length)}</span>
+    </div>
+    <div class="att-grid">${cards || '<div class="empty">دانش‌آموزی در این کلاس نیست</div>'}</div>
+  </div>
+
+  <div class="card neu">
+    <h3>📋 گزارش روز ${faDate(date)}</h3>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>دانش‌آموز</th><th>وضعیت</th><th>ثبت‌کننده</th></tr></thead>
+        <tbody>${dayAtt.map(a=>{
+          const s = getStudent(a.studentId); if(!s) return '';
+          const b = a.status==='حاضر'?'b-ok':a.status==='غایب'?'b-bad':a.status==='تاخیر'?'b-warn':'b-info';
+          return `<tr><td>${esc(s.name)}</td><td><span class="badge ${b}">${esc(a.status)}</span></td><td>${esc(a.by||'—')}</td></tr>`;
+        }).join('') || '<tr><td colspan="3" class="empty">ثبتی انجام نشده</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+
+/* ================================================================
+   15) Grades
+   ================================================================ */
+function vGrades(){
+  const editable = can('manageGrades');
+  const list = DB.grades.slice().reverse().slice(0,200);
+  const stuOpts = DB.students.map(s=>`<option value="${s.id}">${esc(s.name)} — ${esc(getCls(s.classId).name)}</option>`).join('');
+  const subOpts = DB.subjects.map(s=>`<option value="${esc(s.name)}">${esc(s.name)}</option>`).join('');
+
+  const rows = list.map(g=>{
+    const s = getStudent(g.studentId);
+    return `<tr>
+      <td>${esc(s?s.name:'—')}</td>
+      <td>${esc(g.subject)}</td>
+      <td>${esc(g.term)}</td>
+      <td><b>${num(g.score)}</b></td>
+      <td>${faDate(g.date)}</td>
+      <td>${editable ? `<button class="btn sm bad" onclick="delGrade('${g.id}')">🗑️</button>` : '—'}</td>
+    </tr>`;
+  }).join('');
+
+  return `
+  ${editable && DB.students.length ? `
+  <div class="card neu">
+    <h3>📝 ثبت نمره</h3>
+    <div class="grid3">
+      <label class="fld"><span>دانش‌آموز</span><select id="gStu">${stuOpts}</select></label>
+      <label class="fld"><span>درس</span>${subOpts ? `<select id="gSub">${subOpts}</select>` : `<input id="gSub" placeholder="نام درس">`}</label>
+      <label class="fld"><span>نیمسال</span><select id="gTerm"><option>نوبت اول</option><option>نوبت دوم</option><option>پایانی</option><option>مستمر</option></select></label>
+      <label class="fld"><span>نمره (۰-۲۰)</span><input id="gScore" type="number" min="0" max="20" step="0.25"></label>
+      <label class="fld"><span>تاریخ</span><input id="gDate" type="date" value="${isoToday()}"></label>
+      <label class="fld"><span>&nbsp;</span><button class="btn primary" onclick="addGrade()">＋ ثبت</button></label>
+    </div>
+  </div>` : ''}
+
+  <div class="card neu">
+    <h3>📋 نمرات ثبت‌شده <span class="badge b-info">${num(DB.grades.length)}</span></h3>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>دانش‌آموز</th><th>درس</th><th>نیمسال</th><th>نمره</th><th>تاریخ</th><th></th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="6" class="empty">نمره‌ای ثبت نشده</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+function addGrade(){
+  if(!can('manageGrades')) return;
+  const sid = $('#gStu').value;
+  const sub = $('#gSub').value.trim();
+  const score = parseFloat($('#gScore').value);
+  if(!sub){ toast('نام درس الزامی','bad'); return; }
+  if(isNaN(score) || score<0 || score>20){ toast('نمره ۰ تا ۲۰','bad'); return; }
+  DB.grades.push({id:uid(), studentId:sid, subject:sub, term:$('#gTerm').value, score,
+    date:$('#gDate').value||isoToday(), by:CU.name});
+  save(); render(); toast('ثبت شد');
+}
+function delGrade(id){
+  if(!can('manageGrades')) return;
+  if(!confirm('حذف شود؟')) return;
+  DB.grades = DB.grades.filter(g=>g.id!==id);
+  save(); render(); toast('حذف شد','warn');
+}
+
+/* ================================================================
+   16) Report Card (NEW)
+   ================================================================ */
+function vReportCard(){
+  const stuOpts = DB.students.map(s=>`<option value="${s.id}">${esc(s.name)} — ${esc(getCls(s.classId).name)}</option>`).join('');
+  return `
+  <div class="card neu">
+    <h3>🎓 صدور کارنامه</h3>
+    <div class="grid2">
+      <label class="fld"><span>دانش‌آموز</span><select id="rcStu">${stuOpts || '<option value="">—</option>'}</select></label>
+      <label class="fld"><span>نیمسال</span><select id="rcTerm"><option>نوبت اول</option><option>نوبت دوم</option><option>پایانی</option></select></label>
+    </div>
+    <div style="margin-top:14px">
+      <button class="btn primary" onclick="printReportCard()">🖨️ مشاهده و چاپ کارنامه</button>
+    </div>
+  </div>`;
+}
+function printReportCard(){
+  const sid = $('#rcStu').value;
+  const term = $('#rcTerm').value;
+  const s = getStudent(sid);
+  if(!s){ toast('دانش‌آموز انتخاب کنید','bad'); return; }
+  const grades = DB.grades.filter(g=>g.studentId===sid && g.term===term);
+  const avg = grades.length ? (grades.reduce((a,g)=>a+Number(g.score||0),0)/grades.length).toFixed(2) : '—';
+  const c = getCls(s.classId);
+  const rows = grades.map((g,i)=>`<tr><td>${toFa(i+1)}</td><td>${esc(g.subject)}</td><td>${num(g.score)}</td><td>${esc(g.by||'—')}</td></tr>`).join('');
+
+  const ps = $('#printSheet');
+  ps.innerHTML = `
+    <div class="ps-title">کارنامه تحصیلی — ${esc(DB.settings.school)}</div>
+    <div class="ps-info">
+      <span><b>نام:</b> ${esc(s.name)}</span>
+      <span><b>کلاس:</b> ${esc(c.name)}</span>
+      <span><b>سال:</b> ${esc(DB.settings.year)}</span>
+      <span><b>نیمسال:</b> ${esc(term)}</span>
+      <span><b>میانگین:</b> ${avg}</span>
+    </div>
+    <table class="ps-table">
+      <thead><tr><th>#</th><th>درس</th><th>نمره</th><th>دبیر</th></tr></thead>
+      <tbody>${rows || '<tr><td colspan="4">نمره‌ای ثبت نشده</td></tr>'}</tbody>
+    </table>
+    <div class="ps-foot" style="margin-top:8mm">
+      <div>امضای مدیر: <span class="ps-sign"></span></div>
+      <div>تاریخ صدور: ${faDate(isoToday())}</div>
+    </div>`;
+  setTimeout(()=>window.print(), 50);
+}
+
+/* ================================================================
+   17) Homework
+   ================================================================ */
+function vHomework(){
+  const editable = can('manageHomework');
+  const list = DB.homework.slice().reverse();
+  const clsOpts = DB.classes.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');
+
+  const rows = list.map(h=>`
+    <tr>
+      <td>${esc(getCls(h.classId).name)}</td>
+      <td>${esc(h.subject)}</td>
+      <td>${esc(h.title)}</td>
+      <td>${h.dueDate?faDate(h.dueDate):'—'}</td>
+      <td>${esc(h.by||'—')}</td>
+      <td>${editable ? `<button class="btn sm bad" onclick="delHw('${h.id}')">🗑️</button>` : '—'}</td>
+    </tr>
+  `).join('');
+
+  return `
+  ${editable && DB.classes.length ? `
+  <div class="card neu">
+    <h3>📒 ثبت تکلیف</h3>
+    <div class="grid2">
+      <label class="fld"><span>کلاس</span><select id="hCls">${clsOpts}</select></label>
+      <label class="fld"><span>درس</span><input id="hSub"></label>
+      <label class="fld full"><span>عنوان</span><input id="hTitle"></label>
+      <label class="fld"><span>مهلت</span><input id="hDue" type="date"></label>
+      <label class="fld"><span>&nbsp;</span><button class="btn primary" onclick="addHw()">＋ ثبت</button></label>
+    </div>
+  </div>` : ''}
+  <div class="card neu">
+    <h3>📋 تکالیف</h3>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>کلاس</th><th>درس</th><th>عنوان</th><th>مهلت</th><th>ثبت‌کننده</th><th></th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="6" class="empty">تکلیفی ثبت نشده</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+function addHw(){
+  if(!can('manageHomework')) return;
+  const title = $('#hTitle').value.trim();
+  if(!title){ toast('عنوان الزامی','bad'); return; }
+  DB.homework.push({id:uid(), classId:$('#hCls').value, subject:$('#hSub').value.trim(),
+    title, dueDate:$('#hDue').value, date:isoToday(), by:CU.name});
+  save(); render(); toast('ثبت شد');
+}
+function delHw(id){
+  if(!can('manageHomework')) return;
+  if(!confirm('حذف شود؟')) return;
+  DB.homework = DB.homework.filter(h=>h.id!==id);
+  save(); render(); toast('حذف شد','warn');
+}
+
+/* ================================================================
+   18) Exams
+   ================================================================ */
+function vExams(){
+  const editable = can('manageExams');
+  const list = DB.exams.slice().reverse();
+  const clsOpts = DB.classes.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');
+
+  const rows = list.map(e=>`
+    <tr>
+      <td>${esc(getCls(e.classId).name)}</td>
+      <td>${esc(e.subject)}</td>
+      <td>${faDate(e.date)}</td>
+      <td dir="ltr">${esc(e.time||'—')}</td>
+      <td>${esc(e.room||'—')}</td>
+      <td>${editable ? `<button class="btn sm bad" onclick="delEx('${e.id}')">🗑️</button>` : '—'}</td>
+    </tr>
+  `).join('');
+
+  return `
+  ${editable && DB.classes.length ? `
+  <div class="card neu">
+    <h3>✏️ برنامه امتحانات</h3>
+    <div class="grid3">
+      <label class="fld"><span>کلاس</span><select id="eCls">${clsOpts}</select></label>
+      <label class="fld"><span>درس</span><input id="eSub"></label>
+      <label class="fld"><span>تاریخ</span><input id="eDate" type="date" value="${isoToday()}"></label>
+      <label class="fld"><span>ساعت</span><input id="eTime" type="time"></label>
+      <label class="fld"><span>محل</span><input id="eRoom"></label>
+      <label class="fld"><span>&nbsp;</span><button class="btn primary" onclick="addExam()">＋ ثبت</button></label>
+    </div>
+  </div>` : ''}
+  <div class="card neu">
+    <h3>📋 امتحانات</h3>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>کلاس</th><th>درس</th><th>تاریخ</th><th>ساعت</th><th>محل</th><th></th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="6" class="empty">امتحانی ثبت نشده</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+function addExam(){
+  if(!can('manageExams')) return;
+  const sub = $('#eSub').value.trim();
+  if(!sub){ toast('درس الزامی','bad'); return; }
+  DB.exams.push({id:uid(), classId:$('#eCls').value, subject:sub,
+    date:$('#eDate').value, time:$('#eTime').value, room:$('#eRoom').value.trim(), by:CU.name});
+  save(); render(); toast('ثبت شد');
+}
+function delEx(id){
+  if(!can('manageExams')) return;
+  if(!confirm('حذف شود؟')) return;
+  DB.exams = DB.exams.filter(x=>x.id!==id);
+  save(); render(); toast('حذف شد','warn');
+}
+
+/* ================================================================
+   19) Schedule (NEW - weekly timetable)
+   ================================================================ */
+function vSchedule(){
+  const editable = can('manageExams');
+  const clsOpts = DB.classes.map(c=>`<option value="${c.id}" ${state.cls===c.id?'selected':''}>${esc(c.name)}</option>`).join('');
+  const days = ['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه'];
+  const periods = ['زنگ ۱','زنگ ۲','زنگ ۳','زنگ ۴'];
+
+  let grid = `<div class="tt-grid"><div class="tt-cell head"></div>${days.map(d=>`<div class="tt-cell head">${d}</div>`).join('')}`;
+  periods.forEach((p,pi)=>{
+    grid += `<div class="tt-cell head">${p}</div>`;
+    days.forEach((d,di)=>{
+      const cell = DB.schedule.find(s=>s.classId===state.cls && s.day===di && s.period===pi);
+      grid += `<div class="tt-cell">
+        ${cell ? `<b>${esc(cell.subject)}</b><div class="sub">${esc(cell.teacher||'')}</div>` : '—'}
+        ${editable ? `<button class="btn sm" style="margin-top:6px" onclick="editSchedule('${state.cls}',${di},${pi})">${cell?'✏️':'＋'}</button>` : ''}
+      </div>`;
+    });
+  });
+  grid += '</div>';
+
+  return `
+  <div class="card neu">
+    <h3>⏰ برنامه هفتگی</h3>
+    ${!editable ? `<div class="lock-notice">برای ویرایش باید دسترسی داشته باشید.</div>` : ''}
+    <div class="toolbar">
+      <label class="fld" style="min-width:220px"><span>کلاس</span>
+        <select onchange="state.cls=this.value;render()">${clsOpts || '<option>—</option>'}</select></label>
+    </div>
+    ${DB.classes.length ? grid : '<div class="empty">ابتدا کلاس بسازید</div>'}
+  </div>`;
+}
+function editSchedule(clsId, day, period){
+  if(!can('manageExams')) return;
+  const cell = DB.schedule.find(s=>s.classId===clsId && s.day===day && s.period===period);
+  const html = `<div class="grid2">
+    <label class="fld full"><span>درس</span><input name="sub" value="${esc(cell?.subject||'')}"></label>
+    <label class="fld full"><span>دبیر</span><input name="tch" value="${esc(cell?.teacher||'')}"></label>
+  </div>`;
+  modal('⏰ برنامه', html, m=>{
+    const sub = $('[name=sub]',m).value.trim();
+    if(cell){ cell.subject = sub; cell.teacher = $('[name=tch]',m).value.trim(); }
+    else if(sub) DB.schedule.push({id:uid(), classId:clsId, day, period, subject:sub, teacher:$('[name=tch]',m).value.trim()});
+    save(); render(); toast('ثبت شد');
+  });
+}
+
+/* ================================================================
+   20) Tuition
+   ================================================================ */
+function vTuition(){
+  const editable = can('manageFees');
+  const q = state.q.trim();
+  const list = DB.students.filter(s=> !q || (s.name+' '+s.nid).includes(q)).sort((a,b)=>a.name.localeCompare(b.name,'fa'));
+
+  const totalFee = DB.students.reduce((x,s)=>x+netFeeOf(s),0);
+  const totalPaid = DB.students.reduce((x,s)=>x+paidOf(s.id),0);
+  const totalRem = DB.students.reduce((x,s)=>x+remainingOf(s),0);
+
+  const rows = list.map((s,i)=>{
+    const paid = paidOf(s.id), rem = remainingOf(s), disc = discountOf(s.id);
+    const pct = netFeeOf(s) ? Math.min(100, Math.round(paid/netFeeOf(s)*100)) : 0;
+    return `<tr>
+      <td>${num(i+1)}</td>
+      <td><b>${esc(s.name)}</b></td>
+      <td>${esc(getCls(s.classId).name)}</td>
+      <td>${money(s.fee)}</td>
+      <td>${money(disc)}</td>
+      <td>${money(paid)}</td>
+      <td>${rem>0?`<span class="badge b-bad">${money(rem)}</span>`:'<span class="badge b-ok">تسویه</span>'}</td>
+      <td style="min-width:100px"><div class="bar"><i style="width:${pct}%"></i></div></td>
+      <td>${editable ? `<button class="btn sm primary" onclick="payModal('${s.id}')">💳</button>
+        <button class="btn sm warn" onclick="discountModal('${s.id}')">🏷️</button>` : '—'}</td>
+    </tr>`;
+  }).join('');
+
+  return `
+  <div class="stats">
+    <div class="stat neu"><div class="i">💵</div><div class="t">جمع شهریه</div><div class="v" style="font-size:1.1rem">${money(totalFee)}</div></div>
+    <div class="stat neu"><div class="i">✅</div><div class="t">پرداختی</div><div class="v" style="font-size:1.1rem;color:var(--ok)">${money(totalPaid)}</div></div>
+    <div class="stat neu"><div class="i">⚠️</div><div class="t">معوقات</div><div class="v" style="font-size:1.1rem;color:var(--bad)">${money(totalRem)}</div></div>
+  </div>
+  <div class="card neu">
+    <h3>💰 مدیریت شهریه</h3>
+    ${!editable ? `<div class="lock-notice">فقط مدیر و معاون می‌توانند شهریه ثبت کنند.</div>` : ''}
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>#</th><th>نام</th><th>کلاس</th><th>شهریه</th><th>تخفیف</th><th>پرداختی</th><th>مانده</th><th>پیشرفت</th><th>عملیات</th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="9" class="empty">موردی یافت نشد</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card neu">
+    <h3>🧾 آخرین پرداخت‌ها</h3>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>دانش‌آموز</th><th>مبلغ</th><th>تاریخ</th><th>توضیح</th></tr></thead>
+        <tbody>${DB.payments.slice(-15).reverse().map(p=>{
+          const s = getStudent(p.studentId);
+          return `<tr><td>${esc(s?s.name:'—')}</td><td>${money(p.amount)}</td><td>${faDate(p.date)}</td><td>${esc(p.desc||'—')}</td></tr>`;
+        }).join('') || '<tr><td colspan="4" class="empty">پرداختی ثبت نشده</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+function payModal(id){
+  if(!can('manageFees')) return;
+  const s = getStudent(id); if(!s) return;
+  const html = `<div class="grid2">
+    <label class="fld"><span>مبلغ</span><input name="amount" type="number" min="0"></label>
+    <label class="fld"><span>تاریخ</span><input name="date" type="date" value="${isoToday()}"></label>
+    <label class="fld full"><span>توضیح</span><input name="desc"></label>
+  </div>`;
+  modal('💳 پرداخت — '+esc(s.name), html, m=>{
+    const amount = +$('[name=amount]',m).value||0;
+    if(amount<=0){ toast('مبلغ الزامی','bad'); return false; }
+    DB.payments.push({id:uid(), studentId:id, amount, date:$('[name=date]',m).value||isoToday(), desc:$('[name=desc]',m).value.trim(), by:CU.name});
+    save(); render(); toast('ثبت شد');
+  });
+}
+function discountModal(id){
+  if(!can('manageFees')) return;
+  const s = getStudent(id); if(!s) return;
+  const html = `<div class="grid2">
+    <label class="fld"><span>مبلغ تخفیف</span><input name="amount" type="number" min="0"></label>
+    <label class="fld"><span>دلیل</span><input name="reason"></label>
+  </div>`;
+  modal('🏷️ تخفیف — '+esc(s.name), html, m=>{
+    const amount = +$('[name=amount]',m).value||0;
+    if(amount<=0){ toast('مبلغ الزامی','bad'); return false; }
+    DB.discounts.push({id:uid(), studentId:id, amount, reason:$('[name=reason]',m).value.trim(), date:isoToday(), by:CU.name});
+    save(); render(); toast('ثبت شد');
+  });
+}
+
+/* ================================================================
+   21) Expenses (NEW)
+   ================================================================ */
+function vExpenses(){
+  const editable = can('manageFees');
+  const list = DB.expenses.slice().reverse();
+  const total = DB.expenses.reduce((s,e)=>s+(+e.amount||0),0);
+  const rows = list.map(e=>`
+    <tr>
+      <td>${esc(e.title)}</td>
+      <td>${esc(e.category||'—')}</td>
+      <td>${money(e.amount)}</td>
+      <td>${faDate(e.date)}</td>
+      <td>${editable ? `<button class="btn sm bad" onclick="delExp('${e.id}')">🗑️</button>` : '—'}</td>
+    </tr>
+  `).join('');
+  return `
+  <div class="stats">
+    <div class="stat neu"><div class="i">💸</div><div class="t">جمع هزینه‌ها</div><div class="v" style="font-size:1.1rem;color:var(--bad)">${money(total)}</div></div>
+  </div>
+  ${editable ? `
+  <div class="card neu">
+    <h3>💸 ثبت هزینه</h3>
+    <div class="grid2">
+      <label class="fld full"><span>عنوان</span><input id="expTitle"></label>
+      <label class="fld"><span>دسته</span><input id="expCat" placeholder="مثلاً تعمیرات"></label>
+      <label class="fld"><span>مبلغ</span><input id="expAmt" type="number" min="0"></label>
+      <label class="fld"><span>تاریخ</span><input id="expDate" type="date" value="${isoToday()}"></label>
+      <label class="fld"><span>&nbsp;</span><button class="btn primary" onclick="addExp()">＋ ثبت</button></label>
+    </div>
+  </div>` : ''}
+  <div class="card neu">
+    <h3>📋 لیست هزینه‌ها</h3>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>عنوان</th><th>دسته</th><th>مبلغ</th><th>تاریخ</th><th></th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="5" class="empty">هزینه‌ای ثبت نشده</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+function addExp(){
+  if(!can('manageFees')) return;
+  const title = $('#expTitle').value.trim();
+  const amount = +$('#expAmt').value||0;
+  if(!title || amount<=0){ toast('عنوان و مبلغ الزامی','bad'); return; }
+  DB.expenses.push({id:uid(), title, category:$('#expCat').value.trim(), amount, date:$('#expDate').value||isoToday(), by:CU.name});
+  save(); render(); toast('ثبت شد');
+}
+function delExp(id){
+  if(!can('manageFees')) return;
+  if(!confirm('حذف شود؟')) return;
+  DB.expenses = DB.expenses.filter(e=>e.id!==id);
+  save(); render(); toast('حذف شد','warn');
+}
+
+/* ================================================================
+   22) Commitments
+   ================================================================ */
+function vCommit(){
+  const editable = can('manageCommit');
+  const list = DB.commitments.slice().reverse();
+  const stuOpts = DB.students.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('');
+  const rows = list.map(c=>{
+    const s = getStudent(c.studentId);
+    return `<tr>
+      <td>${esc(s?s.name:'—')}</td>
+      <td>${esc(c.title)}</td>
+      <td>${esc(c.type)}</td>
+      <td>${faDate(c.date)}</td>
+      <td><span class="badge ${c.status==='انجام شده'?'b-ok':'b-warn'}">${esc(c.status)}</span></td>
+      <td>${editable ? `<button class="btn sm" onclick="toggleCommit('${c.id}')">${c.status==='انجام شده'?'↩️':'✔️'}</button>
+        <button class="btn sm bad" onclick="delCommit('${c.id}')">🗑️</button>` : '—'}</td>
+    </tr>`;
+  }).join('');
+  return `
+  ${editable && DB.students.length ? `
+  <div class="card neu">
+    <h3>📋 ثبت تعهد</h3>
+    <div class="grid2">
+      <label class="fld"><span>دانش‌آموز</span><select id="cStu">${stuOpts}</select></label>
+      <label class="fld"><span>نوع</span><select id="cType">
+        <option>تعهد کتبی دانش‌آموز</option><option>تعهد والدین</option><option>تعهد انضباطی</option><option>تعهد مالی</option>
+      </select></label>
+      <label class="fld full"><span>عنوان</span><input id="cTitle"></label>
+      <label class="fld"><span>تاریخ</span><input id="cDate" type="date" value="${isoToday()}"></label>
+      <label class="fld"><span>&nbsp;</span><button class="btn primary" onclick="addCommit()">＋ ثبت</button></label>
+    </div>
+  </div>` : ''}
+  <div class="card neu">
+    <h3>📋 تعهدات</h3>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>دانش‌آموز</th><th>عنوان</th><th>نوع</th><th>تاریخ</th><th>وضعیت</th><th></th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="6" class="empty">تعهدی ثبت نشده</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+function addCommit(){
+  if(!can('manageCommit')) return;
+  const title = $('#cTitle').value.trim();
+  if(!title){ toast('عنوان الزامی','bad'); return; }
+  DB.commitments.push({id:uid(), studentId:$('#cStu').value, title, type:$('#cType').value,
+    date:$('#cDate').value||isoToday(), status:'در انتظار', by:CU.name});
+  save(); render(); toast('ثبت شد');
+}
+function toggleCommit(id){
+  if(!can('manageCommit')) return;
+  const c = DB.commitments.find(x=>x.id===id); if(!c) return;
+  c.status = c.status==='انجام شده' ? 'در انتظار' : 'انجام شده';
+  save(); render();
+}
+function delCommit(id){
+  if(!can('manageCommit')) return;
+  if(!confirm('حذف شود؟')) return;
+  DB.commitments = DB.commitments.filter(x=>x.id!==id);
+  save(); render(); toast('حذف شد','warn');
+}
+
+/* ================================================================
+   23) Discipline
+   ================================================================ */
+function vDiscipline(){
+  const editable = can('manageDiscipline');
+  const list = DB.discipline.slice().reverse();
+  const stuOpts = DB.students.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('');
+  const rows = list.map(d=>{
+    const s = getStudent(d.studentId);
+    const b = d.type==='تشویق'?'b-ok':d.type==='تذکر شفاهی'?'b-warn':'b-bad';
+    return `<tr>
+      <td>${esc(s?s.name:'—')}</td>
+      <td><span class="badge ${b}">${esc(d.type)}</span></td>
+      <td>${esc(d.title)}</td>
+      <td>${faDate(d.date)}</td>
+      <td>${editable ? `<button class="btn sm bad" onclick="delDisc('${d.id}')">🗑️</button>` : '—'}</td>
+    </tr>`;
+  }).join('');
+  return `
+  ${editable && DB.students.length ? `
+  <div class="card neu">
+    <h3>⚖️ ثبت مورد انضباطی</h3>
+    <div class="grid2">
+      <label class="fld"><span>دانش‌آموز</span><select id="dStu">${stuOpts}</select></label>
+      <label class="fld"><span>نوع</span><select id="dType">
+        <option>تشویق</option><option>تذکر شفاهی</option><option>تذکر کتبی</option><option>احضار والدین</option>
+      </select></label>
+      <label class="fld full"><span>شرح</span><input id="dTitle"></label>
+      <label class="fld"><span>تاریخ</span><input id="dDate" type="date" value="${isoToday()}"></label>
+      <label class="fld"><span>&nbsp;</span><button class="btn primary" onclick="addDisc()">＋ ثبت</button></label>
+    </div>
+  </div>` : ''}
+  <div class="card neu">
+    <h3>📋 سوابق انضباطی</h3>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>دانش‌آموز</th><th>نوع</th><th>شرح</th><th>تاریخ</th><th></th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="5" class="empty">موردی ثبت نشده</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+function addDisc(){
+  if(!can('manageDiscipline')) return;
+  const title = $('#dTitle').value.trim();
+  if(!title){ toast('شرح الزامی','bad'); return; }
+  DB.discipline.push({id:uid(), studentId:$('#dStu').value, type:$('#dType').value, title, date:$('#dDate').value||isoToday(), by:CU.name});
+  save(); render(); toast('ثبت شد');
+}
+function delDisc(id){
+  if(!can('manageDiscipline')) return;
+  if(!confirm('حذف شود؟')) return;
+  DB.discipline = DB.discipline.filter(x=>x.id!==id);
+  save(); render(); toast('حذف شد','warn');
+}
+
+/* ================================================================
+   24) Gate
+   ================================================================ */
+function vGate(){
+  const editable = can('manageGate');
+  const list = DB.gates.slice().reverse();
+  const stuOpts = DB.students.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('');
+  const rows = list.map(g=>{
+    const s = getStudent(g.studentId);
+    return `<tr>
+      <td>${esc(s?s.name:'—')}</td>
+      <td>${esc(g.type)}</td>
+      <td>${faDate(g.date)}</td>
+      <td dir="ltr">${esc(g.time||'—')}</td>
+      <td>${esc(g.reason||'—')}</td>
+      <td>${editable ? `<button class="btn sm bad" onclick="delGate('${g.id}')">🗑️</button>` : '—'}</td>
+    </tr>`;
+  }).join('');
+  return `
+  ${editable && DB.students.length ? `
+  <div class="card neu">
+    <h3>🚪 ثبت خروج / تاخیر</h3>
+    <div class="grid3">
+      <label class="fld"><span>دانش‌آموز</span><select id="gStu">${stuOpts}</select></label>
+      <label class="fld"><span>نوع</span><select id="gType">
+        <option>خروج اضطراری</option><option>خروج با اجازه</option><option>تاخیر ورود</option><option>مرخصی</option>
+      </select></label>
+      <label class="fld"><span>تاریخ</span><input id="gDate" type="date" value="${isoToday()}"></label>
+      <label class="fld"><span>ساعت</span><input id="gTime" type="time" value="${new Date().toTimeString().slice(0,5)}"></label>
+      <label class="fld"><span>علت</span><input id="gReason"></label>
+      <label class="fld"><span>&nbsp;</span><button class="btn primary" onclick="addGate()">＋ ثبت</button></label>
+    </div>
+  </div>` : ''}
+  <div class="card neu">
+    <h3>📋 سوابق</h3>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>دانش‌آموز</th><th>نوع</th><th>تاریخ</th><th>ساعت</th><th>علت</th><th></th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="6" class="empty">موردی ثبت نشده</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+function addGate(){
+  if(!can('manageGate')) return;
+  DB.gates.push({id:uid(), studentId:$('#gStu').value, type:$('#gType').value,
+    date:$('#gDate').value||isoToday(), time:$('#gTime').value, reason:$('#gReason').value.trim(), by:CU.name});
+  save(); render(); toast('ثبت شد');
+}
+function delGate(id){
+  if(!can('manageGate')) return;
+  if(!confirm('حذف شود؟')) return;
+  DB.gates = DB.gates.filter(x=>x.id!==id);
+  save(); render(); toast('حذف شد','warn');
+}
+
+/* ================================================================
+   25) Library (NEW)
+   ================================================================ */
+function vLibrary(){
+  const editable = can('manageLibrary');
+  const books = DB.library.books;
+  const loans = DB.library.loans.filter(l=>!l.returned);
+
+  const bookRows = books.map(b=>`
+    <tr>
+      <td>${esc(b.title)}</td>
+      <td>${esc(b.author||'—')}</td>
+      <td>${esc(b.isbn||'—')}</td>
+      <td>${b.copies||1}</td>
+      <td>${loans.filter(l=>l.bookId===b.id).length}</td>
+      <td>${editable ? `<button class="btn sm bad" onclick="delBook('${b.id}')">🗑️</button>` : '—'}</td>
+    </tr>
+  `).join('');
+
+  const loanRows = loans.map(l=>{
+    const b = DB.library.books.find(x=>x.id===l.bookId);
+    const s = getStudent(l.studentId);
+    return `<tr>
+      <td>${esc(b?b.title:'—')}</td>
+      <td>${esc(s?s.name:'—')}</td>
+      <td>${faDate(l.date)}</td>
+      <td>${editable ? `<button class="btn sm ok" onclick="returnBook('${l.id}')">↩️ برگشت</button>` : '—'}</td>
+    </tr>`;
+  }).join('');
+
+  return `
+  ${editable ? `
+  <div class="card neu">
+    <h3>📖 افزودن کتاب</h3>
+    <div class="grid3">
+      <label class="fld"><span>عنوان</span><input id="bkTitle"></label>
+      <label class="fld"><span>نویسنده</span><input id="bkAuthor"></label>
+      <label class="fld"><span>ISBN</span><input id="bkIsbn" dir="ltr"></label>
+      <label class="fld"><span>تعداد نسخه</span><input id="bkCopies" type="number" value="1"></label>
+      <label class="fld" style="grid-column:span 2"><span>&nbsp;</span><button class="btn primary" onclick="addBook()">＋ ثبت</button></label>
+    </div>
+  </div>
+  <div class="card neu">
+    <h3>📚 امانت کتاب</h3>
+    <div class="grid3">
+      <label class="fld"><span>کتاب</span><select id="lnBook">${books.map(b=>`<option value="${b.id}">${esc(b.title)}</option>`).join('')||'<option>—</option>'}</select></label>
+      <label class="fld"><span>دانش‌آموز</span><select id="lnStu">${DB.students.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('')||'<option>—</option>'}</select></label>
+      <label class="fld"><span>&nbsp;</span><button class="btn primary" onclick="lendBook()">＋ امانت</button></label>
+    </div>
+  </div>` : ''}
+  <div class="card neu">
+    <h3>📖 کتاب‌ها <span class="badge b-info">${num(books.length)}</span></h3>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>عنوان</th><th>نویسنده</th><th>ISBN</th><th>نسخه</th><th>در امانت</th><th></th></tr></thead>
+        <tbody>${bookRows || '<tr><td colspan="6" class="empty">کتابی ثبت نشده</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card neu">
+    <h3>📤 امانت‌های باز <span class="badge b-warn">${num(loans.length)}</span></h3>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>کتاب</th><th>دانش‌آموز</th><th>تاریخ</th><th>عملیات</th></tr></thead>
+        <tbody>${loanRows || '<tr><td colspan="4" class="empty">امانتی فعال نیست</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+function addBook(){
+  if(!can('manageLibrary')) return;
+  const title = $('#bkTitle').value.trim();
+  if(!title){ toast('عنوان الزامی','bad'); return; }
+  DB.library.books.push({id:uid(), title, author:$('#bkAuthor').value.trim(), isbn:$('#bkIsbn').value.trim(), copies:+$('#bkCopies').value||1});
+  save(); render(); toast('ثبت شد');
+}
+function delBook(id){
+  if(!can('manageLibrary')) return;
+  if(!confirm('حذف شود؟')) return;
+  DB.library.books = DB.library.books.filter(b=>b.id!==id);
+  save(); render(); toast('حذف شد','warn');
+}
+function lendBook(){
+  if(!can('manageLibrary')) return;
+  const bookId = $('#lnBook').value;
+  const studentId = $('#lnStu').value;
+  if(!bookId || !studentId){ toast('اطلاعات ناقص','bad'); return; }
+  DB.library.loans.push({id:uid(), bookId, studentId, date:isoToday(), returned:false, by:CU.name});
+  save(); render(); toast('امانت ثبت شد');
+}
+function returnBook(id){
+  if(!can('manageLibrary')) return;
+  const l = DB.library.loans.find(x=>x.id===id); if(!l) return;
+  l.returned = true;
+  l.returnedAt = isoToday();
+  save(); render(); toast('برگشت ثبت شد','ok');
+}
+
+/* ================================================================
+   26) Messages (One-way)
+   ================================================================ */
+function vMessages(){
+  if(!can('manageMessages')) return '<div class="card neu"><div class="empty">دسترسی ندارید</div></div>';
+  const clsOpts = ['<option value="">همه کلاس‌ها</option>'].concat(
+    DB.classes.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`)
+  ).join('');
+
+  const sent = DB.messages.filter(m=>m.fromUserId===CU.id).slice().reverse().slice(0,20);
+  const sentRows = sent.map(m=>`
+    <tr>
+      <td>${esc(m.title)}</td>
+      <td>${esc(m.targetLabel||'—')}</td>
+      <td>${faDate(m.date)}</td>
+      <td>${num((m.readBy||[]).length)}/${num(m.recipientCount||1)}</td>
+      <td><button class="btn sm bad" onclick="delMsg('${m.id}')">🗑️</button></td>
+    </tr>
+  `).join('');
+
+  return `
+  <div class="card neu">
+    <h3>💬 ارسال پیام به والدین <span class="badge b-info">یک‌طرفه</span></h3>
+    <div class="lock-notice">پیام‌رسان یک‌طرفه است: والدین فقط مشاهده و اعتراض دارند.</div>
+    <div class="grid2">
+      <label class="fld"><span>مخاطب</span>
+        <select id="mScope" onchange="onScopeChange()">
+          <option value="class">یک کلاس</option>
+          <option value="all">همه والدین</option>
+          <option value="student">دانش‌آموز خاص</option>
+        </select></label>
+      <label class="fld" id="mClsWrap"><span>کلاس</span><select id="mCls">${clsOpts}</select></label>
+      <label class="fld" id="mStuWrap" style="display:none"><span>دانش‌آموز</span>
+        <select id="mStu">${DB.students.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('')}</select></label>
+      <label class="fld"><span>اولویت</span>
+        <select id="mPrio"><option value="normal">عادی</option><option value="high">مهم</option><option value="urgent">فوری</option></select></label>
+      <label class="fld full"><span>عنوان</span><input id="mTitle"></label>
+      <label class="fld full"><span>متن</span><textarea id="mBody" rows="4"></textarea></label>
+    </div>
+    <div style="margin-top:14px"><button class="btn primary" onclick="sendMsg()">📤 ارسال</button></div>
+  </div>
+  <div class="card neu">
+    <h3>📨 ارسال‌های من</h3>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>عنوان</th><th>مخاطب</th><th>تاریخ</th><th>خوانده</th><th></th></tr></thead>
+        <tbody>${sentRows || '<tr><td colspan="5" class="empty">پیامی ارسال نکرده‌اید</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+function onScopeChange(){
+  const s = $('#mScope').value;
+  $('#mClsWrap').style.display = s==='class' ? '' : 'none';
+  $('#mStuWrap').style.display = s==='student' ? '' : 'none';
+}
+function sendMsg(){
+  if(!can('manageMessages')) return;
+  const scope = $('#mScope').value;
+  const title = $('#mTitle').value.trim();
+  const body = $('#mBody').value.trim();
+  if(!title || !body){ toast('عنوان و متن الزامی','bad'); return; }
+
+  let students = [];
+  if(scope==='class'){
+    const cls = $('#mCls').value;
+    if(!cls){ toast('کلاس را انتخاب کنید','bad'); return; }
+    students = studentsOfClass(cls);
+  } else if(scope==='all') {
+    students = DB.students;
+  } else {
+    students = [getStudent($('#mStu').value)].filter(Boolean);
+  }
+
+  const parents = students.map(s=>parentUserOfStudent(s.id)).filter(Boolean);
+  if(!parents.length){ toast('والدی برای این مخاطبین وجود ندارد','bad'); return; }
+
+  const msg = {
+    id:uid(), fromUserId:CU.id, fromName:CU.name,
+    title, body, priority:$('#mPrio').value,
+    date:isoToday(), dateTime:new Date().toISOString(),
+    toStudentIds: students.map(s=>s.id),
+    recipientParentIds: parents.map(p=>p.id),
+    recipientCount: parents.length,
+    readBy: [],
+    targetLabel: scope==='class' ? getCls($('#mCls').value).name : scope==='all' ? 'همه والدین' : studentName($('#mStu').value),
+    toStaffRoles: []
+  };
+  DB.messages.push(msg);
+  save();
+  $('#mTitle').value = ''; $('#mBody').value = '';
+  toast(`پیام برای ${num(parents.length)} والد ارسال شد`,'ok');
+  render();
+}
+function delMsg(id){
+  if(!confirm('حذف شود؟')) return;
+  DB.messages = DB.messages.filter(m=>m.id!==id);
+  save(); render(); toast('حذف شد','warn');
+}
+
+/* ================================================================
+   27) Objections
+   ================================================================ */
+function vObjections(){
+  if(!can('manageObjections')) return '<div class="card neu"><div class="empty">دسترسی ندارید</div></div>';
+  const list = DB.objections.slice().reverse();
+  const rows = list.map(o=>{
+    const s = getStudent(o.studentId);
+    return `<tr>
+      <td>${faDate(o.date)}</td>
+      <td>${esc(s?s.name:'—')}</td>
+      <td>${esc(o.byName||'—')}</td>
+      <td>${esc(o.note||'—')}</td>
+      <td><span class="badge ${o.status==='باز'?'b-warn':o.status==='بررسی شده'?'b-info':'b-ok'}">${esc(o.status)}</span></td>
+      <td>${o.status==='باز' ? `<button class="btn sm ok" onclick="resolveObj('${o.id}')">✔️</button>` : ''}
+        <button class="btn sm bad" onclick="delObj('${o.id}')">🗑️</button></td>
+    </tr>`;
+  }).join('');
+  return `
+  <div class="card neu">
+    <h3>📮 اعتراض‌ها <span class="badge b-info">${num(list.length)}</span></h3>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>تاریخ</th><th>دانش‌آموز</th><th>والد</th><th>شرح</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="6" class="empty">اعتراضی ثبت نشده</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+function resolveObj(id){
+  const o = DB.objections.find(x=>x.id===id); if(!o) return;
+  o.status = 'بررسی شده';
+  save(); render(); toast('علامت‌گذاری شد');
+}
+function delObj(id){
+  if(!confirm('حذف شود؟')) return;
+  DB.objections = DB.objections.filter(x=>x.id!==id);
+  save(); render(); toast('حذف شد','warn');
+}
+
+/* ================================================================
+   28) Announcements
+   ================================================================ */
+function vAnnounce(){
+  const editable = can('manageAnnounce');
+  const list = DB.announcements.slice().reverse();
+  const items = list.map(a=>`
+    <div class="msg-item ${a.priority==='urgent'?'urgent':a.priority==='high'?'high':''}">
+      <div class="msg-head"><b>${esc(a.title)}</b>
+        <span class="badge ${a.priority==='urgent'?'b-bad':a.priority==='high'?'b-warn':'b-mut'}">${a.priority==='urgent'?'فوری':a.priority==='high'?'مهم':'عادی'}</span></div>
+      <div class="msg-body">${esc(a.body)}</div>
+      <div class="msg-meta" style="margin-top:8px"><span>${esc(a.by||'—')}</span><span>${faDate(a.date)}</span></div>
+      ${editable ? `<div style="margin-top:8px"><button class="btn sm bad" onclick="delAnn('${a.id}')">🗑️</button></div>` : ''}
+    </div>
+  `).join('');
+  return `
+  ${editable ? `
+  <div class="card neu">
+    <h3>📢 ثبت اطلاعیه</h3>
+    <div class="grid2">
+      <label class="fld"><span>عنوان</span><input id="aTitle"></label>
+      <label class="fld"><span>اولویت</span><select id="aPrio"><option value="normal">عادی</option><option value="high">مهم</option><option value="urgent">فوری</option></select></label>
+      <label class="fld full"><span>متن</span><textarea id="aBody" rows="3"></textarea></label>
+    </div>
+    <div style="margin-top:14px"><button class="btn primary" onclick="addAnn()">＋ ثبت</button></div>
+  </div>` : ''}
+  <div class="card neu"><h3>📢 اطلاعیه‌ها</h3>${items || '<div class="empty">اطلاعیه‌ای وجود ندارد</div>'}</div>`;
+}
+function addAnn(){
+  if(!can('manageAnnounce')) return;
+  const title = $('#aTitle').value.trim();
+  const body = $('#aBody').value.trim();
+  if(!title||!body){ toast('عنوان و متن الزامی','bad'); return; }
+  DB.announcements.push({id:uid(), title, body, priority:$('#aPrio').value, date:isoToday(), by:CU.name});
+  save(); render(); toast('ثبت شد');
+}
+function delAnn(id){
+  if(!can('manageAnnounce')) return;
+  if(!confirm('حذف شود؟')) return;
+  DB.announcements = DB.announcements.filter(x=>x.id!==id);
+  save(); render(); toast('حذف شد','warn');
+}
+
+/* ================================================================
+   29) Calendar
+   ================================================================ */
+function vCalendar(){
+  const editable = can('manageCalendar');
+  const list = DB.events.slice().sort((a,b)=>a.date.localeCompare(b.date));
+  const rows = list.map(e=>`
+    <tr>
+      <td>${faDate(e.date)}</td>
+      <td>${esc(e.title)}</td>
+      <td>${esc(e.type||'—')}</td>
+      <td>${editable ? `<button class="btn sm bad" onclick="delEvt('${e.id}')">🗑️</button>` : '—'}</td>
+    </tr>
+  `).join('');
+  return `
+  ${editable ? `
+  <div class="card neu">
+    <h3>📅 افزودن رویداد</h3>
+    <div class="grid2">
+      <label class="fld"><span>عنوان</span><input id="evTitle"></label>
+      <label class="fld"><span>تاریخ</span><input id="evDate" type="date" value="${isoToday()}"></label>
+      <label class="fld"><span>نوع</span><select id="evType"><option>رویداد</option><option>تعطیلی</option><option>امتحان</option><option>جلسه اولیا</option></select></label>
+      <label class="fld"><span>&nbsp;</span><button class="btn primary" onclick="addEvt()">＋ ثبت</button></label>
+    </div>
+  </div>` : ''}
+  <div class="card neu">
+    <h3>📅 تقویم</h3>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>تاریخ</th><th>عنوان</th><th>نوع</th><th></th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="4" class="empty">رویدادی ثبت نشده</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+function addEvt(){
+  if(!can('manageCalendar')) return;
+  const title = $('#evTitle').value.trim();
+  if(!title){ toast('عنوان الزامی','bad'); return; }
+  DB.events.push({id:uid(), title, date:$('#evDate').value||isoToday(), type:$('#evType').value, by:CU.name});
+  save(); render(); toast('ثبت شد');
+}
+function delEvt(id){
+  if(!can('manageCalendar')) return;
+  if(!confirm('حذف شود؟')) return;
+  DB.events = DB.events.filter(x=>x.id!==id);
+  save(); render(); toast('حذف شد','warn');
+}
+
+/* ================================================================
+   30) Meetings
+   ================================================================ */
+function vMeetings(){
+  const editable = can('manageMeetings');
+  const list = DB.meetings.slice().reverse();
+  const stuOpts = DB.students.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('');
+  const tchOpts = DB.teachers.map(t=>`<option value="${t.id}">${esc(t.name)}</option>`).join('');
+  const rows = list.map(m=>{
+    const s = getStudent(m.studentId);
+    const t = getTeacher(m.teacherId);
+    return `<tr>
+      <td>${esc(s?s.name:'—')}</td>
+      <td>${esc(t?t.name:'—')}</td>
+      <td>${faDate(m.date)}</td>
+      <td>${esc(m.notes||'—')}</td>
+      <td><span class="badge ${m.status==='انجام شده'?'b-ok':'b-warn'}">${esc(m.status||'—')}</span></td>
+      <td>${editable ? `<button class="btn sm" onclick="toggleMeet('${m.id}')">${m.status==='انجام شده'?'↩️':'✔️'}</button>
+        <button class="btn sm bad" onclick="delMeet('${m.id}')">🗑️</button>` : '—'}</td>
+    </tr>`;
+  }).join('');
+  return `
+  ${editable && DB.students.length ? `
+  <div class="card neu">
+    <h3>🤝 ثبت جلسه</h3>
+    <div class="grid3">
+      <label class="fld"><span>دانش‌آموز</span><select id="meStu">${stuOpts}</select></label>
+      <label class="fld"><span>دبیر</span><select id="meTch"><option value="">—</option>${tchOpts}</select></label>
+      <label class="fld"><span>تاریخ</span><input id="meDate" type="date" value="${isoToday()}"></label>
+      <label class="fld" style="grid-column:span 2"><span>موضوع</span><input id="meNotes"></label>
+      <label class="fld"><span>&nbsp;</span><button class="btn primary" onclick="addMeet()">＋ ثبت</button></label>
+    </div>
+  </div>` : ''}
+  <div class="card neu">
+    <h3>📋 جلسات</h3>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>دانش‌آموز</th><th>دبیر</th><th>تاریخ</th><th>موضوع</th><th>وضعیت</th><th></th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="6" class="empty">جلسه‌ای ثبت نشده</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+function addMeet(){
+  if(!can('manageMeetings')) return;
+  DB.meetings.push({id:uid(), studentId:$('#meStu').value, teacherId:$('#meTch').value,
+    date:$('#meDate').value||isoToday(), notes:$('#meNotes').value.trim(), status:'برنامه‌ریزی شده', by:CU.name});
+  save(); render(); toast('ثبت شد');
+}
+function toggleMeet(id){
+  if(!can('manageMeetings')) return;
+  const m = DB.meetings.find(x=>x.id===id); if(!m) return;
+  m.status = m.status==='انجام شده' ? 'برنامه‌ریزی شده' : 'انجام شده';
+  save(); render();
+}
+function delMeet(id){
+  if(!can('manageMeetings')) return;
+  if(!confirm('حذف شود؟')) return;
+  DB.meetings = DB.meetings.filter(x=>x.id!==id);
+  save(); render(); toast('حذف شد','warn');
+}
+
+/* ================================================================
+   31) Reports
+   ================================================================ */
+function vReports(){
+  const rows = DB.classes.map(c=>{
+    const list = studentsOfClass(c.id);
+    const att = DB.attendance.filter(a=>list.some(s=>s.id===a.studentId));
+    const present = att.filter(a=>a.status==='حاضر').length;
+    const rate = att.length ? Math.round(present/att.length*100) : 0;
+    const rem = list.reduce((x,s)=>x+remainingOf(s),0);
+    return `<tr>
+      <td>${esc(c.name)}</td>
+      <td>${num(list.length)}</td>
+      <td>${num(att.length)}</td>
+      <td style="min-width:120px"><div style="display:flex;align-items:center;gap:8px">
+        <div class="bar" style="flex:1"><i style="width:${rate}%"></i></div><small>${num(rate)}٪</small>
+      </div></td>
+      <td>${rem?`<span class="badge b-bad">${money(rem)}</span>`:'<span class="badge b-ok">—</span>'}</td>
+    </tr>`;
+  }).join('');
+  return `
+  <div class="card neu">
+    <h3>📈 گزارش کلاس‌ها</h3>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>کلاس</th><th>دانش‌آموز</th><th>جلسات</th><th>درصد حضور</th><th>معوقات</th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="5" class="empty">داده‌ای موجود نیست</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card neu">
+    <h3>⬇️ خروجی</h3>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn primary" onclick="exportExcel()">📊 اکسل کامل</button>
+      <button class="btn" onclick="exportJSON()">🗄️ پشتیبان JSON</button>
+    </div>
+  </div>`;
+}
+
+/* ================================================================
+   32) Settings
+   ================================================================ */
+function vSettings(){
+  const isAdmin = CU.role === 'admin';
+  return `
+  ${isAdmin ? `
+  <div class="card neu">
+    <h3>⚙️ تنظیمات مدرسه <span class="badge b-mut">فقط مدیر</span></h3>
+    <div class="grid2">
+      <label class="fld"><span>نام مدرسه</span><input id="setSchool" value="${esc(DB.settings.school||'')}"></label>
+      <label class="fld"><span>سال تحصیلی</span><input id="setYear" value="${esc(DB.settings.year||'')}"></label>
+      <label class="fld full"><span>آدرس</span><input id="setAddr" value="${esc(DB.settings.address||'')}"></label>
+      <label class="fld"><span>تلفن</span><input id="setPhone" value="${esc(DB.settings.phone||'')}" dir="ltr"></label>
+      <label class="fld"><span>نام معاون</span><input id="setVice" value="${esc(DB.settings.viceName||'')}"></label>
+    </div>
+    <div style="margin-top:14px"><button class="btn primary" onclick="saveSettings()">ذخیره</button></div>
+  </div>` : ''}
+
+  <div class="card neu">
+    <h3>🛡️ تغییر رمز حساب خود</h3>
+    <div class="grid2">
+      <label class="fld"><span>نام کاربری</span><input value="${esc(CU.username)}" dir="ltr" disabled></label>
+      <label class="fld"><span>رمز جدید</span><input id="newPass" type="password"></label>
+    </div>
+    <div style="margin-top:14px"><button class="btn primary" onclick="changePass()">🔑 تغییر</button></div>
+  </div>
+
+  ${isAdmin ? `
+  <div class="card neu">
+    <h3>🗄️ پشتیبان‌گیری</h3>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn" onclick="exportJSON()">⬇️ پشتیبان</button>
+      <label class="btn" style="cursor:pointer">⬆️ بازیابی
+        <input type="file" id="jsonIn" accept=".json" hidden></label>
+      <button class="btn bad" onclick="resetAll()">♻️ بازنشانی کامل</button>
+    </div>
+  </div>
+
+  <div class="card neu">
+    <h3>📊 آمار</h3>
+    <div class="hint">
+      دانش‌آموزان: <b>${num(DB.students.length)}</b> |
+      دبیران: <b>${num(DB.teachers.length)}</b> |
+      کاربران: <b>${num(DB.users.length)}</b> |
+      کلاس‌ها: <b>${num(DB.classes.length)}</b> |
+      دروس: <b>${num(DB.subjects.length)}</b> |
+      حضور: <b>${num(DB.attendance.length)}</b> |
+      نمرات: <b>${num(DB.grades.length)}</b> |
+      پرداخت‌ها: <b>${num(DB.payments.length)}</b> |
+      پیام‌ها: <b>${num(DB.messages.length)}</b>
+    </div>
+  </div>` : ''}`;
+}
+function saveSettings(){
+  if(!requireAdmin()) return;
+  DB.settings.school = $('#setSchool').value.trim();
+  DB.settings.year = $('#setYear').value.trim();
+  DB.settings.address = $('#setAddr').value.trim();
+  DB.settings.phone = $('#setPhone').value.trim();
+  DB.settings.viceName = $('#setVice').value.trim();
+  save(); render(); toast('ذخیره شد');
+  $('#brandName').textContent = DB.settings.school;
+  $('#brandYear').textContent = DB.settings.year;
+}
+function changePass(){
+  const np = $('#newPass').value;
+  if(!np){ toast('رمز الزامی','bad'); return; }
+  CU.password = np;
+  save(); toast('رمز تغییر کرد');
+  render();
+}
+function resetAll(){
+  if(!requireAdmin()) return;
+  if(!confirm('همه داده‌ها پاک شود؟ (فقط ادمین باقی می‌ماند)')) return;
+  localStorage.removeItem(LS); localStorage.removeItem(SESSION);
+  DB = emptyDB(); save();
+  CU = null;
+  $('#loginScreen').style.display = '';
+  $('#app').style.display = 'none';
+}
+
+/* ================================================================
+   33) Parent Views
+   ================================================================ */
+function vParentDash(){
+  const s = getStudent(CU.studentId);
+  if(!s) return '<div class="card neu"><div class="empty">فرزندی به این حساب متصل نیست</div></div>';
+  const c = getCls(s.classId);
+  const att = DB.attendance.filter(a=>a.studentId===s.id);
+  const present = att.filter(a=>a.status==='حاضر').length;
+  const absent = att.filter(a=>a.status==='غایب').length;
+  const grades = DB.grades.filter(g=>g.studentId===s.id);
+  const rem = remainingOf(s);
+  const unread = DB.messages.filter(m=>m.toStudentIds?.includes(s.id) && !m.readBy?.includes(CU.id)).length;
+  const upcomingExams = DB.exams.filter(e=>e.classId===s.classId && e.date>=isoToday()).slice(0,5);
+
+  return `
+  <div class="stats">
+    <div class="stat neu"><div class="i">🎓</div><div class="t">دانش‌آموز</div><div class="v" style="font-size:1rem">${esc(s.name)}</div></div>
+    <div class="stat neu"><div class="i">🏫</div><div class="t">کلاس</div><div class="v" style="font-size:1rem">${esc(c.name)}</div></div>
+    <div class="stat neu"><div class="i">✅</div><div class="t">حاضر</div><div class="v" style="color:var(--ok)">${num(present)}</div></div>
+    <div class="stat neu"><div class="i">❌</div><div class="t">غایب</div><div class="v" style="color:var(--bad)">${num(absent)}</div></div>
+    <div class="stat neu"><div class="i">📝</div><div class="t">نمرات</div><div class="v">${num(grades.length)}</div></div>
+    <div class="stat neu"><div class="i">💰</div><div class="t">مانده شهریه</div><div class="v" style="font-size:1.05rem">${money(rem)}</div></div>
+    <div class="stat neu"><div class="i">💬</div><div class="t">پیام‌های جدید</div><div class="v" style="color:${unread>0?'var(--pri)':'var(--muted)'}">${num(unread)}</div></div>
+  </div>
+  <div class="card neu">
+    <h3>⚡ دسترسی سریع</h3>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn" onclick="go('patt')">🗓️ حضور فرزند</button>
+      <button class="btn" onclick="go('pgrades')">📝 نمرات</button>
+      <button class="btn" onclick="go('preport')">🎓 کارنامه</button>
+      <button class="btn" onclick="go('pmessages')">💬 پیام‌ها</button>
+    </div>
+  </div>
+  <div class="card neu">
+    <h3>✏️ امتحانات پیش رو</h3>
+    ${upcomingExams.length ? `<div class="hint">${upcomingExams.map(e=>`• ${esc(e.subject)} — ${faDate(e.date)}`).join('<br>')}</div>` : '<div class="hint">امتحانی در پیش نیست</div>'}
+  </div>`;
+}
+
+function vParentAtt(){
+  const s = getStudent(CU.studentId); if(!s) return '<div class="empty">—</div>';
+  const list = DB.attendance.filter(a=>a.studentId===s.id).slice().reverse();
+  const rows = list.map(a=>{
+    const b = a.status==='حاضر'?'b-ok':a.status==='غایب'?'b-bad':a.status==='تاخیر'?'b-warn':'b-info';
+    const hasObj = DB.objections.some(o=>o.type==='attendance' && o.refId===a.id && o.byUserId===CU.id);
+    return `<tr>
+      <td>${faDate(a.date)}</td>
+      <td><span class="badge ${b}">${esc(a.status)}</span></td>
+      <td>${esc(a.by||'—')}</td>
+      <td>${hasObj ? '<span class="badge b-info">اعتراض ثبت شده</span>' : `<button class="btn sm warn" onclick="objectAtt('${a.id}')">⚠️ اعتراض</button>`}</td>
+    </tr>`;
+  }).join('');
+  return `
+  <div class="card neu">
+    <h3>🗓️ حضور ${esc(s.name)}</h3>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>تاریخ</th><th>وضعیت</th><th>ثبت‌کننده</th><th>عملیات</th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="4" class="empty">رکوردی ثبت نشده</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+function objectAtt(attId){
+  const a = DB.attendance.find(x=>x.id===attId); if(!a) return;
+  DB.objections.push({
+    id:uid(), type:'attendance', refId:a.id,
+    refTitle:`حضور ${faDate(a.date)} — ${a.status}`,
+    studentId:a.studentId, byName:CU.name, byUserId:CU.id,
+    note:`اعتراض به ثبت ${a.status} در تاریخ ${faDate(a.date)}`,
+    date:isoToday(), status:'باز', createdAt:new Date().toISOString()
+  });
+  save();
+  modal('⚠️ اعتراض ثبت شد',`<div style="text-align:center;padding:10px 0">
+    <div style="font-size:3rem">📮</div>
+    <p style="font-size:1rem;font-weight:600;margin:10px 0">اعتراض شما ثبت شد.</p>
+    <p class="hint">لطفاً برای بررسی به معاون آموزشی مدرسه مراجعه فرمایید.</p>
+  </div>`, null, '', false);
+  render();
+}
+
+function vParentGrades(){
+  const s = getStudent(CU.studentId); if(!s) return '<div class="empty">—</div>';
+  const list = DB.grades.filter(g=>g.studentId===s.id).slice().reverse();
+  const avg = list.length ? (list.reduce((a,g)=>a+Number(g.score||0),0)/list.length).toFixed(2) : '—';
+  const rows = list.map(g=>`<tr><td>${esc(g.subject)}</td><td>${esc(g.term)}</td><td><b>${num(g.score)}</b></td><td>${faDate(g.date)}</td></tr>`).join('');
+  return `
+  <div class="card neu">
+    <h3>📝 نمرات ${esc(s.name)} <span class="badge b-info">میانگین: ${avg}</span></h3>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>درس</th><th>نیمسال</th><th>نمره</th><th>تاریخ</th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="4" class="empty">نمره‌ای ثبت نشده</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+
+function vParentReport(){
+  const s = getStudent(CU.studentId); if(!s) return '<div class="empty">—</div>';
+  return `
+  <div class="card neu">
+    <h3>🎓 کارنامه</h3>
+    <div class="grid2">
+      <label class="fld"><span>نیمسال</span><select id="pTerm">
+        <option>نوبت اول</option><option>نوبت دوم</option><option>پایانی</option>
+      </select></label>
+      <label class="fld"><span>&nbsp;</span><button class="btn primary" onclick="printParentReport()">🖨️ مشاهده و چاپ</button></label>
+    </div>
+  </div>`;
+}
+function printParentReport(){
+  const term = $('#pTerm').value;
+  $('#rcStu').value = CU.studentId;
+  $('#rcTerm').value = term;
+  printReportCard();
+}
+
+function vParentTuition(){
+  const s = getStudent(CU.studentId); if(!s) return '<div class="empty">—</div>';
+  const paid = paidOf(s.id), rem = remainingOf(s), disc = discountOf(s.id);
+  const pays = DB.payments.filter(p=>p.studentId===s.id).slice().reverse();
+  const pct = netFeeOf(s) ? Math.min(100, Math.round(paid/netFeeOf(s)*100)) : 0;
+  const rows = pays.map(p=>`<tr><td>${money(p.amount)}</td><td>${faDate(p.date)}</td><td>${esc(p.desc||'—')}</td></tr>`).join('');
+  return `
+  <div class="stats">
+    <div class="stat neu"><div class="i">💵</div><div class="t">کل شهریه</div><div class="v" style="font-size:1.05rem">${money(s.fee)}</div></div>
+    <div class="stat neu"><div class="i">🏷️</div><div class="t">تخفیف</div><div class="v" style="font-size:1.05rem">${money(disc)}</div></div>
+    <div class="stat neu"><div class="i">✅</div><div class="t">پرداختی</div><div class="v" style="font-size:1.05rem;color:var(--ok)">${money(paid)}</div></div>
+    <div class="stat neu"><div class="i">⚠️</div><div class="t">مانده</div><div class="v" style="font-size:1.05rem;color:${rem>0?'var(--bad)':'var(--ok)'}">${money(rem)}</div></div>
+  </div>
+  <div class="card neu">
+    <h3>📊 پیشرفت پرداخت</h3>
+    <div class="bar"><i style="width:${pct}%"></i></div>
+    <div class="hint" style="margin-top:8px">${num(pct)}٪ پرداخت شده</div>
+  </div>
+  <div class="card neu">
+    <h3>🧾 سابقه</h3>
+    <div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>مبلغ</th><th>تاریخ</th><th>توضیح</th></tr></thead>
+      <tbody>${rows || '<tr><td colspan="3" class="empty">پرداختی ثبت نشده</td></tr>'}</tbody>
+    </table></div>
+  </div>`;
+}
+
+function vParentMessages(){
+  const s = getStudent(CU.studentId);
+  if(!s) return '<div class="card neu"><div class="empty">—</div></div>';
+  const myMsgs = DB.messages.filter(m=>m.toStudentIds?.includes(s.id)).slice().reverse();
+
+  let changed = false;
+  myMsgs.forEach(m=>{ if(!m.readBy) m.readBy=[]; if(!m.readBy.includes(CU.id)){ m.readBy.push(CU.id); changed=true; } });
+  if(changed) save();
+
+  const items = myMsgs.map(m=>{
+    const hasObj = (m.objections||[]).some(o=>o.by===CU.id);
+    return `<div class="msg-item ${m.priority==='urgent'?'urgent':m.priority==='high'?'high':''}">
+      <div class="msg-head"><b>${esc(m.title)}</b>
+        <span class="badge ${m.priority==='urgent'?'b-bad':m.priority==='high'?'b-warn':'b-mut'}">${m.priority==='urgent'?'فوری':m.priority==='high'?'مهم':'عادی'}</span></div>
+      <div class="msg-body">${esc(m.body)}</div>
+      <div class="msg-meta" style="margin-top:8px"><span>از: ${esc(m.fromName)}</span><span>${faDate(m.date)}</span>${hasObj?'<span class="badge b-info">اعتراض ثبت شده</span>':''}</div>
+      <div style="margin-top:10px">
+        ${hasObj ? '<div class="hint">شما اعتراض کرده‌اید. لطفاً به معاون آموزشی مراجعه کنید.</div>'
+          : `<button class="btn sm warn" onclick="objectMsg('${m.id}')">⚠️ اعتراض به این پیام</button>`}
+      </div>
+    </div>`;
+  }).join('');
+
+  return `
+  <div class="card neu">
+    <h3>💬 پیام‌های دریافتی <span class="badge b-info">${num(myMsgs.length)}</span></h3>
+    <div class="lock-notice">پیام‌رسان یک‌طرفه است. برای اعتراض روی دکمه بزنید.</div>
+    ${items || '<div class="empty">پیامی دریافت نکرده‌اید</div>'}
+  </div>`;
+}
+function objectMsg(msgId){
+  const msg = DB.messages.find(m=>m.id===msgId); if(!msg) return;
+  if(!msg.objections) msg.objections = [];
+  if(msg.objections.some(o=>o.by===CU.id)) return;
+  msg.objections.push({by:CU.id, name:CU.name, at:new Date().toISOString()});
+  DB.objections.push({
+    id:uid(), type:'message', refId:msg.id, refTitle:msg.title,
+    studentId:CU.studentId, byName:CU.name, byUserId:CU.id,
+    note:'اعتراض به پیام: '+msg.title,
+    date:isoToday(), status:'باز', createdAt:new Date().toISOString()
+  });
+  save();
+  modal('⚠️ اعتراض ثبت شد',`<div style="text-align:center;padding:10px 0">
+    <div style="font-size:3rem">📮</div>
+    <p style="font-size:1rem;font-weight:600;margin:10px 0">اعتراض شما ثبت شد.</p>
+    <p class="hint">لطفاً به معاون آموزشی مدرسه مراجعه فرمایید.</p>
+  </div>`, null, '', false);
+  render();
+}
+
+function vParentAnnounce(){
+  const list = DB.announcements.slice().reverse();
+  const items = list.map(a=>`
+    <div class="msg-item ${a.priority==='urgent'?'urgent':a.priority==='high'?'high':''}">
+      <div class="msg-head"><b>${esc(a.title)}</b></div>
+      <div class="msg-body">${esc(a.body)}</div>
+      <div class="msg-meta" style="margin-top:8px">${faDate(a.date)}</div>
+    </div>
+  `).join('');
+  return `<div class="card neu"><h3>📢 اطلاعیه‌ها</h3>${items || '<div class="empty">اطلاعیه‌ای وجود ندارد</div>'}</div>`;
+}
+
+function vParentMeetings(){
+  const s = getStudent(CU.studentId); if(!s) return '<div class="empty">—</div>';
+  const list = DB.meetings.filter(m=>m.studentId===s.id).slice().reverse();
+  const rows = list.map(m=>{
+    const t = getTeacher(m.teacherId);
+    return `<tr>
+      <td>${faDate(m.date)}</td>
+      <td>${esc(t?t.name:'—')}</td>
+      <td>${esc(m.notes||'—')}</td>
+      <td><span class="badge ${m.status==='انجام شده'?'b-ok':'b-warn'}">${esc(m.status||'—')}</span></td>
+    </tr>`;
+  }).join('');
+  return `<div class="card neu"><h3>🤝 جلسات</h3>
+    <div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>تاریخ</th><th>دبیر</th><th>موضوع</th><th>وضعیت</th></tr></thead>
+      <tbody>${rows || '<tr><td colspan="4" class="empty">جلسه‌ای ثبت نشده</td></tr>'}</tbody>
+    </table></div></div>`;
+}
+
+/* ================================================================
+   34) Print Attendance Sheet
+   ================================================================ */
+function printAttendanceSheet(){
+  if(!attState.cls) attState.cls = DB.classes[0]?.id;
+  if(!attState.cls){ toast('کلاسی وجود ندارد','bad'); return; }
+  const c = getCls(attState.cls);
+  const all = studentsOfClass(attState.cls).sort((a,b)=>a.name.localeCompare(b.name,'fa'));
+  const day = {};
+  DB.attendance.filter(a=>a.date===attState.date).forEach(a=>day[a.studentId]=a.status);
+
+  let cols=2, fs=10;
+  const n = all.length;
+  if(n>30){cols=2;fs=9;} if(n>50){cols=3;fs=8.5;} if(n>80){cols=3;fs=7.6;}
+  if(n>120){cols=4;fs=6.9;} if(n>160){cols=4;fs=6.2;} if(n>200){cols=4;fs=5.6;}
+
+  const rows = all.map((s,i)=>{
+    const st = day[s.id] || '';
+    const cOn = x => st===x ? 'on' : '';
+    return `<div class="ps-row">
+      <span class="ps-i">${toFa(i+1)}</span>
+      <span class="ps-n">${esc(s.name)}</span>
+      <span class="ps-s">
+        <span class="ps-c ${cOn('حاضر')}">ح</span>
+        <span class="ps-c ${cOn('غایب')}">غ</span>
+        <span class="ps-c ${cOn('تاخیر')}">ت</span>
+        <span class="ps-c ${cOn('مرخصی')}">م</span>
+      </span>
+    </div>`;
+  }).join('');
+
+  const cnt = st => all.filter(s=> day[s.id]===st).length;
+  const ps = $('#printSheet');
+  ps.style.setProperty('--cols', cols);
+  ps.style.setProperty('--fs', fs+'pt');
+
+  ps.innerHTML = `
+    <div class="ps-head">
+      <div class="ps-h1">
+        <span>${esc(DB.settings.school||'هنرستان')}</span>
+        <span>سال ${esc(DB.settings.year||'')}</span>
+      </div>
+      <div class="ps-h2">فرم حضور کلاس: <b>${esc(c.name)}</b> — تاریخ: <b>${faDate(attState.date)}</b></div>
+      <div class="ps-h3">
+        <span>تعداد: ${num(all.length)}</span><span>حاضر: ${num(cnt('حاضر'))}</span>
+        <span>غایب: ${num(cnt('غایب'))}</span><span>تاخیر: ${num(cnt('تاخیر'))}</span>
+        <span>مرخصی: ${num(cnt('مرخصی'))}</span>
+      </div>
+      <div class="ps-legend">ح=حاضر غ=غایب ت=تاخیر م=مرخصی</div>
+    </div>
+    <div class="ps-body">${rows || '<div class="empty">دانش‌آموزی نیست</div>'}</div>
+    <div class="ps-foot">
+      <div>امضای دبیر: <span class="ps-sign"></span></div>
+      <div>مهر مدرسه</div>
+    </div>`;
+  setTimeout(()=>window.print(), 50);
+}
+
+/* ================================================================
+   35) Excel
+   ================================================================ */
+function exportJSON(){
+  const blob = new Blob([JSON.stringify(DB,null,2)],{type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `backup-${isoToday()}.json`;
+  a.click();
+  toast('پشتیبان دانلود شد');
+}
+
+function exportExcel(){
+  if(typeof XLSX === 'undefined'){ toast('کتابخانه اکسل بارگذاری نشد','bad'); return; }
+  const wb = XLSX.utils.book_new();
+
+  const s1 = [['نام','کد ملی','موبایل','کلاس','رشته','شهریه','تخفیف','پرداختی','مانده']];
+  DB.students.forEach(s=>{
+    const c = getCls(s.classId);
+    s1.push([s.name, s.nid, s.mobile, c.name, c.field, s.fee||0, discountOf(s.id), paidOf(s.id), remainingOf(s)]);
+  });
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(s1), 'دانش‌آموزان');
+
+  const s2 = [['نام','کد ملی','موبایل','نقش']];
+  DB.teachers.forEach(t=> s2.push([t.name, t.nid, t.mobile, t.role]));
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(s2), 'دبیران');
+
+  const s3 = [['کاربری','رمز','نام','نقش','فعال']];
+  DB.users.forEach(u=> s3.push([u.username, u.password, u.name, ROLES[u.role].label, u.active?'بله':'خیر']));
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(s3), 'کاربران');
+
+  const s4 = [['دانش‌آموز','کلاس','تاریخ','وضعیت','ثبت‌کننده']];
+  DB.attendance.forEach(a=>{
+    const s = getStudent(a.studentId); if(!s) return;
+    s4.push([s.name, getCls(s.classId).name, a.date, a.status, a.by||'']);
+  });
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(s4), 'حضور');
+
+  const s5 = [['دانش‌آموز','درس','نیمسال','نمره','تاریخ']];
+  DB.grades.forEach(g=>{
+    const s = getStudent(g.studentId);
+    s5.push([s?s.name:'—', g.subject, g.term, g.score, g.date]);
+  });
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(s5), 'نمرات');
+
+  const s6 = [['دانش‌آموز','مبلغ','تاریخ','توضیح']];
+  DB.payments.forEach(p=>{
+    const s = getStudent(p.studentId);
+    s6.push([s?s.name:'—', p.amount, p.date, p.desc||'']);
+  });
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(s6), 'پرداخت‌ها');
+
+  XLSX.writeFile(wb, `school-${isoToday()}.xlsx`);
+  toast('اکسل دانلود شد');
+}
+
+function handleFile(file){
+  if(!requireAdmin('ورود اکسل فقط توسط مدیر')) return;
+  if(typeof XLSX === 'undefined'){ toast('کتابخانه اکسل موجود نیست','bad'); return; }
+  const reader = new FileReader();
+  reader.onload = e=>{
+    try{
+      const wb = XLSX.read(new Uint8Array(e.target.result), {type:'array'});
+      importWorkbook(wb);
+    }catch(err){ console.error(err); toast('خطا در خواندن','bad'); }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function importWorkbook(wb){
+  let nS = 0, nT = 0;
+  const existingStudents = new Set(DB.students.map(s=>s.name+s.classId));
+  const existingTeachers = new Set(DB.teachers.map(t=>t.name));
+  const existingUsers = new Set(DB.users.map(u=>u.username));
+
+  wb.SheetNames.forEach(sn=>{
+    const ws = wb.Sheets[sn]; if(!ws) return;
+    const rows = XLSX.utils.sheet_to_json(ws,{header:1,defval:'',raw:false});
+    if(!rows.length) return;
+
+    let cls = DB.classes.find(c=>normName(c.name)===normName(sn));
+    if(!cls){
+      const grade = ['دوازدهم','یازدهم','دهم'].find(g=>normName(sn).includes(g));
+      const field = grade ? normName(sn).replace(grade,'').trim() : normName(sn);
+      cls = DB.classes.find(c=>c.grade===grade && normName(c.field)===field);
+    }
+
+    let hi=-1, kind='';
+    for(let i=0;i<Math.min(rows.length,12);i++){
+      const r = rows[i].map(c=>String(c||''));
+      if(r.some(c=>c.includes('نام پرسنل'))){ hi=i; kind='t'; break; }
+      if(r.some(c=>c.includes('نام دانش')||c.includes('نام و نام خانوادگی'))){ hi=i; kind='s'; break; }
+    }
+    if(hi<0) return;
+
+    if(kind==='t'){
+      for(let i=hi+1;i<rows.length;i++){
+        const r = rows[i]; if(!r) continue;
+        const name = [r[0],r[1]].map(x=>String(x||'').trim()).filter(Boolean).join(' ');
+        if(!name || existingTeachers.has(name)) continue;
+        const mobile = String(r[2]||'').trim();
+        const nid = String(r[3]||'').trim();
+        const role = String(r[4]||'دبیر').trim() || 'دبیر';
+        const t = {id:uid(), name, mobile, nid, role};
+        DB.teachers.push(t);
+        const base = mobile||nid||('t'+Math.random().toString(36).slice(2,7));
+        const un = makeUsername(base, existingUsers);
+        const pw = mobile && mobile.length>=4 ? mobile.slice(-4) : '1234';
+        DB.users.push({id:uid(), username:un, password:pw,
+          role: role.includes('دبیر')?'teacher':'staff', name, teacherId:t.id, active:true});
+        nT++;
+      }
+    } else if(cls) {
+      for(let i=hi+1;i<rows.length;i++){
+        const r = rows[i]; if(!r) continue;
+        const name = [r[0],r[1]].map(x=>String(x||'').trim()).filter(Boolean).join(' ');
+        if(!name || existingStudents.has(name+cls.id)) continue;
+        const nid = String(r[2]||'').trim();
+        const mobile = String(r[5]||'').trim()||String(r[8]||'').trim();
+        const s = {id:uid(), name, nid, mobile, classId:cls.id, fee:0, guardian:'', note:''};
+        DB.students.push(s);
+        const base = mobile||nid||('p'+Math.random().toString(36).slice(2,7));
+        const un = makeUsername(base, existingUsers);
+        const pw = mobile && mobile.length>=4 ? mobile.slice(-4) : (nid && nid.length>=4 ? nid.slice(-4) : '1234');
+        DB.users.push({id:uid(), username:un, password:pw, role:'parent', name:'ولی '+name, studentId:s.id, active:true});
+        nS++;
+      }
+    }
+  });
+  save(); render();
+  toast(`${num(nS)} دانش‌آموز و ${num(nT)} دبیر اضافه شد`,'ok');
+}
+
+document.addEventListener('change', e=>{
+  if(e.target && e.target.id === 'xlsIn'){
+    const f = e.target.files[0]; if(f) handleFile(f);
+    e.target.value = '';
+  }
+  if(e.target && e.target.id === 'jsonIn'){
+    if(!requireAdmin()) { e.target.value=''; return; }
+    const f = e.target.files[0]; if(!f) return;
+    const rd = new FileReader();
+    rd.onload = ev=>{
+      try{
+        const obj = JSON.parse(ev.target.result);
+        if(!obj.users) throw 0;
+        DB = obj; migrate(); save(); render(); toast('بازیابی انجام شد');
+      }catch(err){ toast('فایل معتبر نیست','bad'); }
+    };
+    rd.readAsText(f);
+    e.target.value = '';
+  }
+});
+
+/* ================================================================
+   36) Start
+   ================================================================ */
+load();
+
+const savedSession = localStorage.getItem(SESSION);
+if(savedSession){
+  const u = DB.users.find(x=>x.id===savedSession && x.active);
+  if(u){ CU = u; showApp(); }
+} else {
+  $('#loginScreen').style.display = '';
+  $('#app').style.display = 'none';
+}
+
+$('#q').addEventListener('input', e=>{
+  state.q = e.target.value;
+  state.page = 1;
+  if(CU) render();
+});
+</script>
+</body>
+</html>
